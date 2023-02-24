@@ -100,7 +100,7 @@ go build ./cmd/virt-probe
 go build ./cmd/virtctl
 
 %install
-install -m 755 %{buildroot}/usr/bin
+install -m 755 -d %{buildroot}/usr/bin
 install -m 555 virt-api %{buildroot}/usr/bin/virt-api
 install -m 555 virt-chroot %{buildroot}/usr/bin/virt-chroot
 install -m 555 virt-controller %{buildroot}/usr/bin/virt-controller
