@@ -30,7 +30,7 @@ Container images for Kubevirt
 %setup -q -n %{name}-%{version}
 
 %build
-%global base_image %{registry}/oraclelinux:8-slim
+%global base_image container-registry.oracle.com/os/oraclelinux:8-slim
 podman build \
     --build-arg BASE_IMAGE=%{base_image} \
     --build-arg PACKAGE=kubevirt-api-%{version}-%{release}\
