@@ -22,6 +22,9 @@ Summary: TODO
 %package chroot
 Summary: TODO
 
+%package controller
+Summary: TODO
+
 %package exportproxy
 Summary: TODO
 
@@ -56,6 +59,9 @@ TODO
 TODO
 
 %description chroot
+TODO
+
+%description controller
 TODO
 
 %description exportproxy
@@ -128,6 +134,10 @@ install -m 555 virtctl %{buildroot}/usr/bin/virtctl
 %files chroot
 %license LICENSE THIRD_PARTY_LICENSES.txt
 /usr/bin/virt-chroot
+
+%files controller
+%license LICENSE THIRD_PARTY_LICENSES.txt
+/usr/bin/virt-controller
 
 %files exportproxy
 %license LICENSE THIRD_PARTY_LICENSES.txt
