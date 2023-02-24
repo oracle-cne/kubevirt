@@ -1,0 +1,166 @@
+{{{$version := printf "%s.%s.%s" .major .minor .patch}}}
+%global debug_package %{nil}
+
+Name:		kubevirt
+Version:	{{{$version}}}
+Release:	1%{?dist}
+Summary:	Kubevirt 
+
+License:	Apache License 2.0
+URL:		https://github.com/kubevirt/kubevirt
+Source0:	%{name}-%{version}.tar.bz2
+
+BuildRequires:	golang >= 1.18.0
+BuildRequires:	libvirt-devel
+
+%package -n virtctl
+Summary: CLI for Kubevirt
+
+%package api
+Summary: TODO
+
+%package chroot
+Summary: TODO
+
+%package exportproxy
+Summary: TODO
+
+%package exportserver
+Summary: TODO
+
+%package freezer
+Summary: TODO
+
+%package handler
+Summary: TODO
+
+%package launcher-monitor
+Summary: TODO
+
+%package launcher
+Summary: TODO
+
+%package operator
+Summary: TODO
+
+%package probe
+Summary: TODO
+
+%description
+Managed virtualized infrastructure within Kubernetes.
+
+%description -n virtctl
+TODO
+
+%description api
+TODO
+
+%description chroot
+TODO
+
+%description exportproxy
+TODO
+
+%description exportserver
+TODO
+
+%description freezer
+TODO
+
+%description handler
+TODO
+
+%description launcher-monitor
+TODO
+
+%description launcher
+TODO
+
+%description operator
+TODO
+
+%description probe
+TODO
+
+%prep
+%setup -q
+
+%build
+go build ./cmd/virt-api
+go build ./cmd/virt-chroot
+go build ./cmd/virt-controller
+go build ./cmd/virt-exportproxy
+go build ./cmd/virt-exportserver
+go build ./cmd/virt-freezer
+go build ./cmd/virt-handler
+go build ./cmd/virt-launcher-monitor
+go build ./cmd/virt-launcher
+go build ./cmd/virt-operator
+go build ./cmd/virt-probe
+go build ./cmd/virtctl
+
+%install
+install -m virt-api %{buildroot}/usr/bin/virt-api
+install -m virt-chroot %{buildroot}/usr/bin/virt-chroot
+install -m virt-controller %{buildroot}/usr/bin/virt-controller
+install -m virt-exportproxy %{buildroot}/usr/bin/virt-exportproxy
+install -m virt-exportserver %{buildroot}/usr/bin/virt-exportserver
+install -m virt-freezer %{buildroot}/usr/bin/virt-freezer
+install -m virt-handler %{buildroot}/usr/bin/virt-handler
+install -m virt-launcher-monitor %{buildroot}/usr/bin/virt-launcher-monitor
+install -m virt-launcher %{buildroot}/usr/bin/virt-launcher
+install -m virt-operator %{buildroot}/usr/bin/virt-operator
+install -m virt-probe %{buildroot}/usr/bin/virt-probe
+install -m virtctl %{buildroot}/usr/bin/virtctl
+
+%files
+%license LICENSE THIRD_PARTY_LICENSES.txt
+
+%files -n virtctl
+%license LICENSE THIRD_PARTY_LICENSES.txt
+/usr/bin/virtctl
+
+%files api
+%license LICENSE THIRD_PARTY_LICENSES.txt
+/usr/bin/virt-api
+
+%files chroot
+%license LICENSE THIRD_PARTY_LICENSES.txt
+/usr/bin/virt-chroot
+
+%files exportproxy
+%license LICENSE THIRD_PARTY_LICENSES.txt
+/usr/bin/virt-exportproxy
+
+%files exportserver
+%license LICENSE THIRD_PARTY_LICENSES.txt
+/usr/bin/virt-exportserver
+
+%files freezer
+%license LICENSE THIRD_PARTY_LICENSES.txt
+/usr/bin/virt-freezer
+
+%files handler
+%license LICENSE THIRD_PARTY_LICENSES.txt
+/usr/bin/virt-handler
+
+%files launcher-monitor
+%license LICENSE THIRD_PARTY_LICENSES.txt
+/usr/bin/virt-launcher-monitor
+
+%files launcher
+%license LICENSE THIRD_PARTY_LICENSES.txt
+/usr/bin/virt-launcher
+
+%files operator
+%license LICENSE THIRD_PARTY_LICENSES.txt
+/usr/bin/virt-operator
+
+%files probe
+%license LICENSE THIRD_PARTY_LICENSES.txt
+/usr/bin/virt-probe
+
+%changelog
+* {{{.changelog_timestamp}}} - {{{$version}}}-1
+- Initial Release
+
