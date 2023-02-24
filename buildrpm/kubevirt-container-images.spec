@@ -11,7 +11,7 @@
 %global _buildhost	build-ol%{?oraclelinux}-%{?_arch}.oracle.com
 
 
-Name:           %{_name}-container-image
+Name:           %{_name}-container-images
 Version:        {{{$version}}}
 Release:        1%{?dist}
 BuildArch:      x86_64
@@ -33,7 +33,7 @@ Container images for Kubevirt
 %global base_image %{registry}/oraclelinux:8-slim
 podman build \
     --build-arg BASE_IMAGE=%{base_image} \
-    --build-arg PACKAGE=%{version}-%{release}\
+    --build-arg PACKAGE=kubevirt-api-%{version}-%{release}\
     %{build_args} \
     -t %{registry}/virt-api:%{version} -f ./olm/builds/Dockerfile.virt-api ./olm/builds
 podman save -o virt_api.tar %{registry}/virt-api:%{version}
