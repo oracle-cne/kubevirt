@@ -100,18 +100,19 @@ go build ./cmd/virt-probe
 go build ./cmd/virtctl
 
 %install
-install -m virt-api %{buildroot}/usr/bin/virt-api
-install -m virt-chroot %{buildroot}/usr/bin/virt-chroot
-install -m virt-controller %{buildroot}/usr/bin/virt-controller
-install -m virt-exportproxy %{buildroot}/usr/bin/virt-exportproxy
-install -m virt-exportserver %{buildroot}/usr/bin/virt-exportserver
-install -m virt-freezer %{buildroot}/usr/bin/virt-freezer
-install -m virt-handler %{buildroot}/usr/bin/virt-handler
-install -m virt-launcher-monitor %{buildroot}/usr/bin/virt-launcher-monitor
-install -m virt-launcher %{buildroot}/usr/bin/virt-launcher
-install -m virt-operator %{buildroot}/usr/bin/virt-operator
-install -m virt-probe %{buildroot}/usr/bin/virt-probe
-install -m virtctl %{buildroot}/usr/bin/virtctl
+install -m 755 %{buildroot}/usr/bin
+install -m 555 virt-api %{buildroot}/usr/bin/virt-api
+install -m 555 virt-chroot %{buildroot}/usr/bin/virt-chroot
+install -m 555 virt-controller %{buildroot}/usr/bin/virt-controller
+install -m 555 virt-exportproxy %{buildroot}/usr/bin/virt-exportproxy
+install -m 555 virt-exportserver %{buildroot}/usr/bin/virt-exportserver
+install -m 555 virt-freezer %{buildroot}/usr/bin/virt-freezer
+install -m 555 virt-handler %{buildroot}/usr/bin/virt-handler
+install -m 555 virt-launcher-monitor %{buildroot}/usr/bin/virt-launcher-monitor
+install -m 555 virt-launcher %{buildroot}/usr/bin/virt-launcher
+install -m 555 virt-operator %{buildroot}/usr/bin/virt-operator
+install -m 555 virt-probe %{buildroot}/usr/bin/virt-probe
+install -m 555 virtctl %{buildroot}/usr/bin/virtctl
 
 %files
 %license LICENSE THIRD_PARTY_LICENSES.txt
