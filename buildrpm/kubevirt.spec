@@ -43,7 +43,7 @@ Requires: acl
 Requires: curl
 Requires: vim-minimal
 # - base extra
-Requires: coreutils-single
+Requires: coreutils
 Requires: glibc-minimal-langpack
 Requires: libcurl-minimal
 # - handler base
@@ -72,7 +72,7 @@ Requires: acl
 Requires: curl
 Requires: vim-minimal
 # - base extra
-Requires: coreutils-single
+Requires: coreutils
 Requires: glibc-minimal-langpack
 Requires: libcurl-minimal
 # - launcher base
