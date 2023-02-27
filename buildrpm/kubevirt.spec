@@ -35,7 +35,7 @@ Summary: TODO
 Summary: TODO
 
 %package handler
-
+Summary: TODO
 # See ./hack/rpm-deps.sh to understand how this set of
 # dependencies was determined.
 # - base
