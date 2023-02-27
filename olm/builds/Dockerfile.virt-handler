@@ -4,7 +4,7 @@ FROM ${BASE_IMAGE}
 ARG PACKAGE
 RUN useradd -d /home/nonroot-user -U -u 1001 -s /bin/bash nonroot-user
 RUN sh -c "dnf config-manager --enable ol8_kvm_appstream && \
-    dnf module enable -y virt:ol && \
+    dnf module enable -y virt:kvm_utils2 && \
     dnf install -y "$PACKAGE" && \
     dnf clean all"
 USER 1001

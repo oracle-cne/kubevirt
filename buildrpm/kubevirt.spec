@@ -77,7 +77,6 @@ Requires: libvirt-daemon-driver-qemu
 Requires: qemu-kvm-core
 # - launcher x86
 Requires: edk2-ovmf
-Requires: qemu-kvm-hw-usbredir
 Requires: seabios
 # - launcher extra
 Requires: ethtool
