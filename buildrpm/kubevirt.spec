@@ -41,11 +41,9 @@ Summary: TODO
 # - base
 Requires: acl
 Requires: curl
-Requires: vim-minimal
 # - base extra
 Requires: coreutils
 Requires: glibc-minimal-langpack
-Requires: libcurl-minimal
 # - handler base
 Requires: qemu-img
 # - handler extra
@@ -70,11 +68,9 @@ Summary: TODO
 # - base
 Requires: acl
 Requires: curl
-Requires: vim-minimal
 # - base extra
 Requires: coreutils
 Requires: glibc-minimal-langpack
-Requires: libcurl-minimal
 # - launcher base
 Requires: libvirt-client
 Requires: libvirt-daemon-driver-qemu
