@@ -7,6 +7,9 @@ olcnePipeline(
   branchPattern: new BranchPattern(master: 'oracle/release/.*', feature: 'feature/.*'),
   containers: [
     ('container-registry.oracle.com/olcne/virt-api:v' + version): 'olcne/virt-api:v' + version,
+    ('container-registry.oracle.com/olcne/virt-controller:v' + version): 'olcne/virt-controller:v' + version,
+    ('container-registry.oracle.com/olcne/virt-exportproxy:v' + version): 'olcne/virt-exportproxy:v' + version,
+    ('container-registry.oracle.com/olcne/virt-exportserver:v' + version): 'olcne/virt-exportserver:v' + version,
   ],
   yumOL8Repos: ['ol8_appstream', 'ol8_codeready_builder'],
   macros: [
