@@ -79,7 +79,6 @@ Requires: libcurl-minimal
 Requires: libvirt-client
 Requires: libvirt-daemon-driver-qemu
 Requires: qemu-kvm-core
-Requires: passt
 # - launcher x86
 Requires: edk2-ovmf
 Requires: qemu-kvm-hw-usbredir

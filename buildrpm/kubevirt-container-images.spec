@@ -31,6 +31,7 @@ Container images for Kubevirt
 
 %build
 %global base_image container-registry.oracle.com/os/oraclelinux:8-slim
+%global base_image_full container-registry.oracle.com/os/oraclelinux:8
 podman build \
     --build-arg BASE_IMAGE=%{base_image} \
     --build-arg PACKAGE=kubevirt-api-%{version}-%{release}\
@@ -60,14 +61,14 @@ podman build \
 podman save -o virt_exportserver.tar %{registry}/virt-exportserver:v%{version}
 
 podman build \
-    --build-arg BASE_IMAGE=%{base_image} \
+    --build-arg BASE_IMAGE=%{base_image_full} \
     --build-arg PACKAGE=kubevirt-launcher-%{version}-%{release}\
     %{build_args} \
     -t %{registry}/virt-launcher:v%{version} -f ./olm/builds/Dockerfile.virt-launcher ./olm/builds
 podman save -o virt_launcher.tar %{registry}/virt-launcher:v%{version}
 
 podman build \
-    --build-arg BASE_IMAGE=%{base_image} \
+    --build-arg BASE_IMAGE=%{base_image_full} \
     --build-arg PACKAGE=kubevirt-handler-%{version}-%{release}\
     %{build_args} \
     -t %{registry}/virt-handler:v%{version} -f ./olm/builds/Dockerfile.virt-handler ./olm/builds
