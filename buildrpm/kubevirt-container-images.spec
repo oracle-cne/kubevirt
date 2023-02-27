@@ -58,11 +58,29 @@ podman build \
     %{build_args} \
     -t %{registry}/virt-exportserver:v%{version} -f ./olm/builds/Dockerfile.virt-exportserver ./olm/builds
 podman save -o virt_exportserver.tar %{registry}/virt-exportserver:v%{version}
+
+podman build \
+    --build-arg BASE_IMAGE=%{base_image} \
+    --build-arg PACKAGE=kubevirt-launcher-%{version}-%{release}\
+    %{build_args} \
+    -t %{registry}/virt-launcher:v%{version} -f ./olm/builds/Dockerfile.virt-launcher ./olm/builds
+podman save -o virt_launcher.tar %{registry}/virt-launcher:v%{version}
+
+podman build \
+    --build-arg BASE_IMAGE=%{base_image} \
+    --build-arg PACKAGE=kubevirt-handler-%{version}-%{release}\
+    %{build_args} \
+    -t %{registry}/virt-handler:v%{version} -f ./olm/builds/Dockerfile.virt-handler ./olm/builds
+podman save -o virt_handler.tar %{registry}/virt-handler:v%{version}
+
+
 %install
 %__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_api.tar
 %__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_controller.tar
 %__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_exportproxy.tar
 %__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_exportserver.tar
+%__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_handler.tar
+%__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_launcher.tar
 
 %files
 %license LICENSE

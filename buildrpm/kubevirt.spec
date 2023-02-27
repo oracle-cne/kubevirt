@@ -35,13 +35,67 @@ Summary: TODO
 Summary: TODO
 
 %package handler
-Summary: TODO
+
+# See ./hack/rpm-deps.sh to understand how this set of
+# dependencies was determined.
+# - base
+Requires: acl
+Requires: curl
+Requires: vim-minimal
+# - base extra
+Requires: coreutils-single
+Requires: glibc-minimal-langpack
+Requires: libcurl-minimal
+# - handler base
+Requires: qemu-img
+# - handler extra
+Requires: findutils
+Requires: iproute
+Requires: iptables
+Requires: nftables
+Requires: procps-ng
+Requires: selinux-policy
+Requires: selinux-policy-targeted
+Requires: tar
+Requires: util-linux
+Requires: xorriso
 
 %package launcher-monitor
 Summary: TODO
 
 %package launcher
 Summary: TODO
+# See ./hack/rpm-deps.sh to understand how this set of
+# dependencies was determined.
+# - base
+Requires: acl
+Requires: curl
+Requires: vim-minimal
+# - base extra
+Requires: coreutils-single
+Requires: glibc-minimal-langpack
+Requires: libcurl-minimal
+# - launcher base
+Requires: libvirt-client
+Requires: libvirt-daemon-driver-qemu
+Requires: qemu-kvm-core
+Requires: passt
+# - launcher x86
+Requires: edk2-ovmf
+Requires: qemu-kvm-hw-usbredir
+Requires: seabios
+# - launcher extra
+Requires: ethtool
+Requires: findutils
+Requires: iptables
+Requires: nftables
+Requires: nmap-ncat
+Requires: procps-ng
+Requires: selinux-policy
+Requires: selinux-policy-targeted
+Requires: tar
+Requires: xorriso
+
 
 %package operator
 Summary: TODO
