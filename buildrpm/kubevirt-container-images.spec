@@ -47,6 +47,13 @@ podman build \
 podman save -o virt_controller.tar %{registry}/virt-controller:v%{version}
 
 podman build \
+    --build-arg BASE_IMAGE=%{base_image} \
+    --build-arg PACKAGE=kubevirt-operator-%{version}-%{release}\
+    %{build_args} \
+    -t %{registry}/virt-operator:v%{version} -f ./olm/builds/Dockerfile.virt-operator ./olm/builds
+podman save -o virt_operator.tar %{registry}/virt-operator:v%{version}
+
+podman build \
     --build-arg BASE_IMAGE=%{base_image_full} \
     --build-arg PACKAGE=kubevirt-launcher-%{version}-%{release}\
     %{build_args} \
@@ -64,6 +71,7 @@ podman save -o virt_handler.tar %{registry}/virt-handler:v%{version}
 %install
 %__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_api.tar
 %__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_controller.tar
+%__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_operator.tar
 %__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_handler.tar
 %__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_launcher.tar
 
@@ -71,6 +79,7 @@ podman save -o virt_handler.tar %{registry}/virt-handler:v%{version}
 %license LICENSE
 /usr/local/share/olcne/virt_api.tar
 /usr/local/share/olcne/virt_controller.tar
+/usr/local/share/olcne/virt_operator.tar
 /usr/local/share/olcne/virt_handler.tar
 /usr/local/share/olcne/virt_launcher.tar
 
