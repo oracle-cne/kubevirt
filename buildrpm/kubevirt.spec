@@ -103,6 +103,12 @@ Summary: TODO
 %package libguestfs-appliance
 Summary: TODO
 Requires: libguestfs-appliance
+# - base
+Requires: libguestfs-tools
+Requires: libvirt-daemon-driver-qemu
+Requires: qemu-kvm-core
+Requires: seabios
+Requires: edk2-ovmf
 
 %description
 Managed virtualized infrastructure within Kubernetes.

@@ -11,5 +11,6 @@ RUN sh -c "dnf config-manager --enable ol8_kvm_appstream --enable ol8_UEKR7 && \
 ADD qemu.conf /etc/libvirt/qemu.conf
 ADD libvirtd.conf /etc/libvirt/libvirtd.conf
 ADD nsswitch.conf /etc/nsswitch.conf
+ADD virt_launcher.cil /virt_launcher.cil
 
 ENTRYPOINT ["/usr/bin/virt-launcher"]
