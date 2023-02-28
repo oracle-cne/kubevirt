@@ -8,8 +8,6 @@ olcnePipeline(
   containers: [
     ('container-registry.oracle.com/olcne/virt-api:v' + version): 'olcne/virt-api:v' + version,
     ('container-registry.oracle.com/olcne/virt-controller:v' + version): 'olcne/virt-controller:v' + version,
-    ('container-registry.oracle.com/olcne/virt-exportproxy:v' + version): 'olcne/virt-exportproxy:v' + version,
-    ('container-registry.oracle.com/olcne/virt-exportserver:v' + version): 'olcne/virt-exportserver:v' + version,
     ('container-registry.oracle.com/olcne/virt-launcher:v' + version): 'olcne/virt-launcher:v' + version,
     ('container-registry.oracle.com/olcne/virt-handler:v' + version): 'olcne/virt-handler:v' + version,
   ],
