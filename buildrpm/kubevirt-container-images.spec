@@ -50,14 +50,14 @@ podman build \
     --build-arg BASE_IMAGE=%{base_image_full} \
     --build-arg PACKAGE=kubevirt-launcher-%{version}-%{release}\
     %{build_args} \
-    -t %{registry}/virt-launcher:v%{version} -f ./olm/builds/Dockerfile.virt-launcher ./olm/builds
+    -t %{registry}/virt-launcher:v%{version} -f ./olm/builds/Dockerfile.virt-launcher ./cmd/virt-launcher
 podman save -o virt_launcher.tar %{registry}/virt-launcher:v%{version}
 
 podman build \
     --build-arg BASE_IMAGE=%{base_image_full} \
     --build-arg PACKAGE=kubevirt-handler-%{version}-%{release}\
     %{build_args} \
-    -t %{registry}/virt-handler:v%{version} -f ./olm/builds/Dockerfile.virt-handler ./olm/builds
+    -t %{registry}/virt-handler:v%{version} -f ./olm/builds/Dockerfile.virt-handler ./cmd/virt-handler
 podman save -o virt_handler.tar %{registry}/virt-handler:v%{version}
 
 

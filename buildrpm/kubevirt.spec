@@ -12,6 +12,8 @@ Source0:	%{name}-%{version}.tar.bz2
 
 BuildRequires:	golang >= 1.18.0
 BuildRequires:	libvirt-devel
+BuildRequires:  gcc
+BuildRequires:  glibc-static
 
 %package -n virtctl
 Summary: CLI for Kubevirt
@@ -51,6 +53,9 @@ Requires: selinux-policy-targeted
 Requires: tar
 Requires: util-linux
 Requires: xorriso
+# - local
+Requires: kubevirt-container-disk = %{version}-%{release}
+Requires: kubevirt-chroot = %{version}-%{release}
 
 %package launcher
 Summary: TODO
@@ -80,12 +85,19 @@ Requires: selinux-policy
 Requires: selinux-policy-targeted
 Requires: tar
 Requires: xorriso
+# - local
+Requires: kubevirt-container-disk = %{version}-%{release}
+Requires: kubevirt-freezer = %{version}-%{release}
+Requires: kubevirt-probe = %{version}-%{release}
 
 
 %package operator
 Summary: TODO
 
 %package probe
+Summary: TODO
+
+%package: container-disk
 Summary: TODO
 
 %description
@@ -118,6 +130,9 @@ TODO
 %description probe
 TODO
 
+%description container-disk
+TODO
+
 %prep
 %setup -q
 
@@ -131,6 +146,7 @@ go build ./cmd/virt-launcher
 go build ./cmd/virt-operator
 go build ./cmd/virt-probe
 go build ./cmd/virtctl
+cc -o container-disk -static ./cmd/container-disk-v2alpha/main.c
 
 %install
 install -m 755 -d %{buildroot}/usr/bin
@@ -143,6 +159,8 @@ install -m 555 virt-launcher %{buildroot}/usr/bin/virt-launcher
 install -m 555 virt-operator %{buildroot}/usr/bin/virt-operator
 install -m 555 virt-probe %{buildroot}/usr/bin/virt-probe
 install -m 555 virtctl %{buildroot}/usr/bin/virtctl
+install -m 555 container-disk %{buildroot}/usr/bin/container-disk
+install -m 555 ./cmd/virt-launcher/node-labeller/node-labeller.sh %{buildroot}/usr/bin/node-labeller.sh
 
 %files
 %license LICENSE THIRD_PARTY_LICENSES.txt
@@ -174,6 +192,7 @@ install -m 555 virtctl %{buildroot}/usr/bin/virtctl
 %files launcher
 %license LICENSE THIRD_PARTY_LICENSES.txt
 /usr/bin/virt-launcher
+/usr/bin/node-labeller.sh
 
 %files operator
 %license LICENSE THIRD_PARTY_LICENSES.txt
@@ -182,6 +201,10 @@ install -m 555 virtctl %{buildroot}/usr/bin/virtctl
 %files probe
 %license LICENSE THIRD_PARTY_LICENSES.txt
 /usr/bin/virt-probe
+
+%files container-disk
+%license LICENSE THIRD_PARTY_LICENSES.txt
+/usr/bin/container-disk
 
 %changelog
 * {{{.changelog_timestamp}}} - {{{$version}}}-1
