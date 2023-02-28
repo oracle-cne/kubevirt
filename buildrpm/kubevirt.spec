@@ -97,7 +97,7 @@ Summary: TODO
 %package probe
 Summary: TODO
 
-%package: container-disk
+%package container-disk
 Summary: TODO
 
 %description
