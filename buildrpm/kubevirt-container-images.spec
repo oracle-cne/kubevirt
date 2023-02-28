@@ -67,6 +67,12 @@ podman build \
     -t %{registry}/virt-handler:v%{version} -f ./olm/builds/Dockerfile.virt-handler ./cmd/virt-handler
 podman save -o virt_handler.tar %{registry}/virt-handler:v%{version}
 
+podman build \
+    --build-arg BASE_IMAGE=%{base_image_full} \
+    --build-arg PACKAGE=kubevirt-libguestfs-appliance-%{version}-%{release}\
+    %{build_args} \
+    -t %{registry}/libguestfs-tools-image:v%{version} -f ./olm/builds/Dockerfile.libguestfs-appliance ./olm/builds
+podman save -o libguestfs_tools_image.tar %{registry}/libguestfs-tools-image:v%{version}
 
 %install
 %__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_api.tar
@@ -74,6 +80,7 @@ podman save -o virt_handler.tar %{registry}/virt-handler:v%{version}
 %__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_operator.tar
 %__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_handler.tar
 %__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_launcher.tar
+%__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/libguestfs_tools_image.tar
 
 %files
 %license LICENSE
@@ -82,6 +89,7 @@ podman save -o virt_handler.tar %{registry}/virt-handler:v%{version}
 /usr/local/share/olcne/virt_operator.tar
 /usr/local/share/olcne/virt_handler.tar
 /usr/local/share/olcne/virt_launcher.tar
+/usr/local/share/olcne/libguestfs_tools_image.tar
 
 %changelog
 * {{{.changelog_timestamp}}} - {{{$version}}}-1

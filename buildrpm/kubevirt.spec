@@ -100,6 +100,10 @@ Summary: TODO
 %package container-disk
 Summary: TODO
 
+%package libguestfs-appliance
+Summary: TODO
+Requires: libguestfs-appliance
+
 %description
 Managed virtualized infrastructure within Kubernetes.
 
@@ -133,6 +137,9 @@ TODO
 %description container-disk
 TODO
 
+%description libguestfs-appliance
+TODO
+
 %prep
 %setup -q
 
@@ -161,6 +168,7 @@ install -m 555 virt-probe %{buildroot}/usr/bin/virt-probe
 install -m 555 virtctl %{buildroot}/usr/bin/virtctl
 install -m 555 container-disk %{buildroot}/usr/bin/container-disk
 install -m 555 ./cmd/virt-launcher/node-labeller/node-labeller.sh %{buildroot}/usr/bin/node-labeller.sh
+install -m 775 ./cmd/libguestfs/entrypoint.sh %{buildroot}/entrypoint.sh
 
 %files
 %license LICENSE THIRD_PARTY_LICENSES.txt
@@ -205,6 +213,10 @@ install -m 555 ./cmd/virt-launcher/node-labeller/node-labeller.sh %{buildroot}/u
 %files container-disk
 %license LICENSE THIRD_PARTY_LICENSES.txt
 /usr/bin/container-disk
+
+%files libguestfs-appliance
+%license LICENSE THIRD_PARTY_LICENSES.txt
+/entrypoint.sh
 
 %changelog
 * {{{.changelog_timestamp}}} - {{{$version}}}-1
