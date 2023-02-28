@@ -13,7 +13,8 @@ olcnePipeline(
     ('container-registry.oracle.com/olcne/virt-launcher:v' + version): 'olcne/virt-launcher:v' + version,
     ('container-registry.oracle.com/olcne/virt-handler:v' + version): 'olcne/virt-handler:v' + version,
   ],
-  yumOL8Repos: ['ol8_appstream', 'ol8_codeready_builder'],
+  yumOL8Repos: ['ol8_appstream', 'ol8_codeready_builder', 'ol8_kvm_appstream'],
+  ol8ModulesToEnable: ['virt:kvm_utils2'],
   macros: [
     'build_args':  '-v /etc/yum.repos.d/ol_artifacts.repo:/etc/yum.repos.d/ol_artifacts.repo -v /etc/yum/vars:/etc/yum/vars',
   ],
