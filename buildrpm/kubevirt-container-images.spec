@@ -71,7 +71,7 @@ podman build \
     --build-arg BASE_IMAGE=%{base_image_full} \
     --build-arg PACKAGE=kubevirt-libguestfs-appliance-%{version}-%{release}\
     %{build_args} \
-    -t %{registry}/libguestfs-tools-image:v%{version} -f ./olm/builds/Dockerfile.libguestfs-appliance ./olm/builds
+    -t %{registry}/libguestfs-tools-image:v%{version} -f ./olm/builds/Dockerfile.libguestfs-tools-image ./olm/builds
 podman save -o libguestfs_tools_image.tar %{registry}/libguestfs-tools-image:v%{version}
 
 %install
