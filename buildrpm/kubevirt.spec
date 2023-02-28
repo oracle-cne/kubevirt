@@ -25,12 +25,6 @@ Summary: TODO
 %package controller
 Summary: TODO
 
-%package exportproxy
-Summary: TODO
-
-%package exportserver
-Summary: TODO
-
 %package freezer
 Summary: TODO
 
@@ -57,9 +51,6 @@ Requires: selinux-policy-targeted
 Requires: tar
 Requires: util-linux
 Requires: xorriso
-
-%package launcher-monitor
-Summary: TODO
 
 %package launcher
 Summary: TODO
@@ -112,19 +103,10 @@ TODO
 %description controller
 TODO
 
-%description exportproxy
-TODO
-
-%description exportserver
-TODO
-
 %description freezer
 TODO
 
 %description handler
-TODO
-
-%description launcher-monitor
 TODO
 
 %description launcher
@@ -143,11 +125,8 @@ TODO
 go build ./cmd/virt-api
 go build ./cmd/virt-chroot
 go build ./cmd/virt-controller
-go build ./cmd/virt-exportproxy
-go build ./cmd/virt-exportserver
 go build ./cmd/virt-freezer
 go build ./cmd/virt-handler
-go build ./cmd/virt-launcher-monitor
 go build ./cmd/virt-launcher
 go build ./cmd/virt-operator
 go build ./cmd/virt-probe
@@ -158,11 +137,8 @@ install -m 755 -d %{buildroot}/usr/bin
 install -m 555 virt-api %{buildroot}/usr/bin/virt-api
 install -m 555 virt-chroot %{buildroot}/usr/bin/virt-chroot
 install -m 555 virt-controller %{buildroot}/usr/bin/virt-controller
-install -m 555 virt-exportproxy %{buildroot}/usr/bin/virt-exportproxy
-install -m 555 virt-exportserver %{buildroot}/usr/bin/virt-exportserver
 install -m 555 virt-freezer %{buildroot}/usr/bin/virt-freezer
 install -m 555 virt-handler %{buildroot}/usr/bin/virt-handler
-install -m 555 virt-launcher-monitor %{buildroot}/usr/bin/virt-launcher-monitor
 install -m 555 virt-launcher %{buildroot}/usr/bin/virt-launcher
 install -m 555 virt-operator %{buildroot}/usr/bin/virt-operator
 install -m 555 virt-probe %{buildroot}/usr/bin/virt-probe
@@ -187,14 +163,6 @@ install -m 555 virtctl %{buildroot}/usr/bin/virtctl
 %license LICENSE THIRD_PARTY_LICENSES.txt
 /usr/bin/virt-controller
 
-%files exportproxy
-%license LICENSE THIRD_PARTY_LICENSES.txt
-/usr/bin/virt-exportproxy
-
-%files exportserver
-%license LICENSE THIRD_PARTY_LICENSES.txt
-/usr/bin/virt-exportserver
-
 %files freezer
 %license LICENSE THIRD_PARTY_LICENSES.txt
 /usr/bin/virt-freezer
@@ -202,10 +170,6 @@ install -m 555 virtctl %{buildroot}/usr/bin/virtctl
 %files handler
 %license LICENSE THIRD_PARTY_LICENSES.txt
 /usr/bin/virt-handler
-
-%files launcher-monitor
-%license LICENSE THIRD_PARTY_LICENSES.txt
-/usr/bin/virt-launcher-monitor
 
 %files launcher
 %license LICENSE THIRD_PARTY_LICENSES.txt
