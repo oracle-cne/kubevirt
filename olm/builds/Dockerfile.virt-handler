@@ -11,5 +11,6 @@ RUN sh -c "dnf config-manager --enable ol8_kvm_appstream --enable ol8_UEKR7 && \
 ADD nsswitch.conf /etc/nsswitch.conf
 ADD ipv4-nat.nft /etc/nftables/ipv4-nat.nft
 ADD ipv6-nat.nft /etc/nftables/ipv6-nat.nft
+ADD virt_launcher.cil /virt_launcher.cil
 
 ENTRYPOINT ["/usr/bin/virt-handler"]
