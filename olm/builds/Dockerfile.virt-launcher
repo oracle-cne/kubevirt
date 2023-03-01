@@ -3,7 +3,7 @@ FROM ${BASE_IMAGE}
 
 # These steps are translated from ./cmd/virt-launcher/BUILD.bazel
 ARG PACKAGE
-RUN useradd -U -u 107 -s /bin/bash qemu-user
+RUN useradd -U -u 107 -s /bin/bash qemu
 RUN sh -c "dnf config-manager --enable ol8_kvm_appstream --enable ol8_UEKR7 && \
     dnf module enable -y virt:kvm_utils2 && \
     dnf install -y "$PACKAGE" && \
