@@ -4,7 +4,7 @@
 Name:		kubevirt
 Version:	{{{$version}}}
 Release:	1%{?dist}
-Summary:	Kubevirt 
+Summary:	KubeVirt 
 
 License:	Apache License 2.0
 URL:		https://github.com/kubevirt/kubevirt
@@ -16,22 +16,22 @@ BuildRequires:  gcc
 BuildRequires:  glibc-static
 
 %package -n virtctl
-Summary: CLI for Kubevirt
+Summary: CLI for KubeVirt
 
 %package api
-Summary: TODO
+Summary: KubeVirt API Server
 
 %package chroot
-Summary: TODO
+Summary: Chroot utility for KubeVirt
 
 %package controller
-Summary: TODO
+Summary: KubeVirt Kubernetes controller
 
 %package freezer
-Summary: TODO
+Summary: VM freezing utility for KubeVirt
 
 %package handler
-Summary: TODO
+Summary: KubeVirt Handler daemon
 # See ./hack/rpm-deps.sh to understand how this set of
 # dependencies was determined.
 # - base
@@ -58,7 +58,7 @@ Requires: kubevirt-container-disk = %{version}-%{release}
 Requires: kubevirt-chroot = %{version}-%{release}
 
 %package launcher
-Summary: TODO
+Summary: KubeVirt Launcher daemon
 # See ./hack/rpm-deps.sh to understand how this set of
 # dependencies was determined.
 # - base
@@ -92,16 +92,16 @@ Requires: kubevirt-probe = %{version}-%{release}
 
 
 %package operator
-Summary: TODO
+Summary: KubeVirt Operator
 
 %package probe
-Summary: TODO
+Summary: Utility use by KubeVirt to probe VM status
 
 %package container-disk
-Summary: TODO
+Summary: Container disk utility for KubeVirt
 
 %package libguestfs-appliance
-Summary: TODO
+Summary: A set of useful utilities for interacting with VM filesystems
 Requires: libguestfs-appliance
 # - base
 Requires: libguestfs-tools
@@ -114,37 +114,41 @@ Requires: edk2-ovmf
 Managed virtualized infrastructure within Kubernetes.
 
 %description -n virtctl
-TODO
+The CLI for KubeVirt.  virtctl makes it easy to manage virtualized workloads in
+a Kubernetes cluster using KubeVirt.
 
 %description api
-TODO
+The KubeVirt API Server.  It serves requests from other KubeVirt components.
 
 %description chroot
-TODO
+A utility used by KubeVirt to do chroot-like operations in mount namespaces.
 
 %description controller
-TODO
+The KubeVirt Kubernetes controller.  It implements the logic required to service
+the kubevirt.io/v1 family of Kubernetes custom resources.
 
 %description freezer
-TODO
+A VM freexing utility used by KubeVirt
 
 %description handler
-TODO
+The KubeVirt Handler service.  It listens for virtual workloads destined for the
+host it is running on and manages the local set of workloads.
 
 %description launcher
-TODO
+The KubeVirt Launcer service.  Each VM pod uses this utility to launch the VM
+that is running within the pod.
 
 %description operator
-TODO
+The KubeVirt Operator.
 
 %description probe
-TODO
+A utility used by KubeVirt to probe the health of VMs.
 
 %description container-disk
-TODO
+A utility used by KubeVirt to manage container disks.
 
 %description libguestfs-appliance
-TODO
+A set of useful tools for interacting with VM filesystems.
 
 %prep
 %setup -q
