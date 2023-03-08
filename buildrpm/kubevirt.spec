@@ -94,6 +94,7 @@ Requires: xorriso
 Requires: kubevirt-container-disk = %{version}-%{release}
 Requires: kubevirt-freezer = %{version}-%{release}
 Requires: kubevirt-probe = %{version}-%{release}
+Requires: kubevirt-launcher-monitor = %{version}-%{release}
 
 %package launcher-monitor
 Summary: Monitor service for the KubeVirt Launcher
