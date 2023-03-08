@@ -30,6 +30,12 @@ Summary: KubeVirt Kubernetes controller
 %package freezer
 Summary: VM freezing utility for KubeVirt
 
+%package exportserver
+Summary: The KubeVirt export server daemon
+
+%package exportproxy
+Summary: The KubeVirt export proxy daemon
+
 %package handler
 Summary: KubeVirt Handler daemon
 # See ./hack/rpm-deps.sh to understand how this set of
