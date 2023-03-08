@@ -10,7 +10,6 @@ License:	Apache License 2.0
 URL:		https://github.com/kubevirt/kubevirt
 Source0:	%{name}-%{version}.tar.bz2
 
-BuildRequires:	golang = 1.18.9
 BuildRequires:	libvirt-devel
 BuildRequires:  gcc
 BuildRequires:  glibc-static
