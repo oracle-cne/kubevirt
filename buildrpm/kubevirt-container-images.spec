@@ -54,6 +54,20 @@ podman build \
 podman save -o virt_operator.tar %{registry}/virt-operator:v%{version}
 
 podman build \
+    --build-arg BASE_IMAGE=%{base_image} \
+    --build-arg PACKAGE=kubevirt-exportproxy-%{version}-%{release}\
+    %{build_args} \
+    -t %{registry}/virt-exportproxy:v%{version} -f ./olm/builds/Dockerfile.virt-exportproxy ./olm/builds
+podman save -o virt_exportproxy.tar %{registry}/virt-exportproxy:v%{version}
+
+podman build \
+    --build-arg BASE_IMAGE=%{base_image} \
+    --build-arg PACKAGE=kubevirt-exportserver-%{version}-%{release}\
+    %{build_args} \
+    -t %{registry}/virt-exportserver:v%{version} -f ./olm/builds/Dockerfile.virt-exportserver ./olm/builds
+podman save -o virt_exportserver.tar %{registry}/virt-exportserver:v%{version}
+
+podman build \
     --build-arg BASE_IMAGE=%{base_image_full} \
     --build-arg PACKAGE=kubevirt-launcher-%{version}-%{release}\
     %{build_args} \
@@ -78,6 +92,8 @@ podman save -o libguestfs_tools_image.tar %{registry}/libguestfs-tools-image:v%{
 %__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_api.tar
 %__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_controller.tar
 %__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_operator.tar
+%__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_exportproxy.tar
+%__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_exportserver.tar
 %__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_handler.tar
 %__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_launcher.tar
 %__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/libguestfs_tools_image.tar
@@ -89,6 +105,8 @@ podman save -o libguestfs_tools_image.tar %{registry}/libguestfs-tools-image:v%{
 /usr/local/share/olcne/virt_operator.tar
 /usr/local/share/olcne/virt_handler.tar
 /usr/local/share/olcne/virt_launcher.tar
+/usr/local/share/olcne/virt_exportproxy.tar
+/usr/local/share/olcne/virt_exportserver.tar
 /usr/local/share/olcne/libguestfs_tools_image.tar
 
 %changelog

@@ -127,6 +127,12 @@ A utility used by KubeVirt to do chroot-like operations in mount namespaces.
 The KubeVirt Kubernetes controller.  It implements the logic required to service
 the kubevirt.io/v1 family of Kubernetes custom resources.
 
+%description exportproxy
+The KubeVirt export proxy
+
+%description exportserver
+The KubeVirt export server
+
 %description freezer
 A VM freexing utility used by KubeVirt
 
@@ -137,6 +143,9 @@ host it is running on and manages the local set of workloads.
 %description launcher
 The KubeVirt Launcer service.  Each VM pod uses this utility to launch the VM
 that is running within the pod.
+
+%description launcher-monitor
+A monitor service for the KubeVirt Launcher
 
 %description operator
 The KubeVirt Operator.
@@ -157,8 +166,11 @@ A set of useful tools for interacting with VM filesystems.
 go build ./cmd/virt-api
 go build ./cmd/virt-chroot
 go build ./cmd/virt-controller
+go build ./cmd/virt-exportproxy
+go build ./cmd/virt-exportserver
 go build ./cmd/virt-freezer
 go build ./cmd/virt-handler
+go build ./cmd/virt-launcher-monitor
 go build ./cmd/virt-launcher
 go build ./cmd/virt-operator
 go build ./cmd/virt-probe
@@ -170,8 +182,11 @@ install -m 755 -d %{buildroot}/usr/bin
 install -m 555 virt-api %{buildroot}/usr/bin/virt-api
 install -m 555 virt-chroot %{buildroot}/usr/bin/virt-chroot
 install -m 555 virt-controller %{buildroot}/usr/bin/virt-controller
+install -m 555 virt-exportproxy %{buildroot}/usr/bin/virt-exportproxy
+install -m 555 virt-exportserver %{buildroot}/usr/bin/virt-exportserver
 install -m 555 virt-freezer %{buildroot}/usr/bin/virt-freezer
 install -m 555 virt-handler %{buildroot}/usr/bin/virt-handler
+install -m 555 virt-launcher-monitor %{buildroot}/usr/bin/virt-launcher-monitor
 install -m 555 virt-launcher %{buildroot}/usr/bin/virt-launcher
 install -m 555 virt-operator %{buildroot}/usr/bin/virt-operator
 install -m 555 virt-probe %{buildroot}/usr/bin/virt-probe
@@ -199,6 +214,14 @@ install -m 775 ./cmd/libguestfs/entrypoint.sh %{buildroot}/entrypoint.sh
 %license LICENSE THIRD_PARTY_LICENSES.txt
 /usr/bin/virt-controller
 
+%files exportproxy
+%license LICENSE THIRD_PARTY_LICENSES.txt
+/usr/bin/virt-exportproxy
+
+%files exportserver
+%license LICENSE THIRD_PARTY_LICENSES.txt
+/usr/bin/virt-exportserver
+
 %files freezer
 %license LICENSE THIRD_PARTY_LICENSES.txt
 /usr/bin/virt-freezer
@@ -206,6 +229,10 @@ install -m 775 ./cmd/libguestfs/entrypoint.sh %{buildroot}/entrypoint.sh
 %files handler
 %license LICENSE THIRD_PARTY_LICENSES.txt
 /usr/bin/virt-handler
+
+%files launcher-monitor
+%license LICENSE THIRD_PARTY_LICENSES.txt
+/usr/bin/virt-launcher-monitor
 
 %files launcher
 %license LICENSE THIRD_PARTY_LICENSES.txt

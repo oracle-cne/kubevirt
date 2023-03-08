@@ -5,7 +5,7 @@ FROM ${BASE_IMAGE}
 ARG PACKAGE
 RUN useradd -U -u 107 -s /bin/bash qemu
 RUN sh -c "dnf config-manager --enable ol8_kvm_appstream --enable ol8_UEKR7 && \
-    dnf module enable -y virt:kvm_utils2 && \
+    dnf module enable -y virt:ol && \
     dnf install -y "$PACKAGE" && \
     dnf clean all"
 ADD qemu.conf /etc/libvirt/qemu.conf
