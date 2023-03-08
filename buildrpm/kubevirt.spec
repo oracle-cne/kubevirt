@@ -96,6 +96,8 @@ Requires: kubevirt-container-disk = %{version}-%{release}
 Requires: kubevirt-freezer = %{version}-%{release}
 Requires: kubevirt-probe = %{version}-%{release}
 
+%package launcher-monitor
+Summary: Monitor service for the KubeVirt Launcher
 
 %package operator
 Summary: KubeVirt Operator
