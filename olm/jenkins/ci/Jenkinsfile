@@ -15,11 +15,12 @@ olcnePipeline(
     ('container-registry.oracle.com/olcne/virt-operator:v' + version): 'olcne/virt-operator:v' + version,
     ('container-registry.oracle.com/olcne/libguestfs-tools-image:v' + version): 'olcne/libguestfs-tools-image:v' + version,
   ],
-  yumOL7Repos: ['ol7_golang117', 'ol7_optional_latest'],
+  yumOL7Repos: ['ol7_golang117', 'ol7_optional_latest', 'ol7_kvm_utils'],
   yumOL8Repos: ['ol8_appstream', 'ol8_codeready_builder'],
   ol8ModulesToEnable: ['virt:ol'],
   macros: [
     'build_args':  '-v /etc/yum.repos.d/ol_artifacts.repo:/etc/yum.repos.d/ol_artifacts.repo -v /etc/yum/vars:/etc/yum/vars',
+    'build_handler': params.PLATFORM_FILTER == "ol8" ? "1" : "0",
   ],
   platforms: ['ol7', 'ol8'],
   customPlatformStages: [

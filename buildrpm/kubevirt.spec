@@ -178,7 +178,9 @@ go build ./cmd/virt-controller
 go build ./cmd/virt-exportproxy
 go build ./cmd/virt-exportserver
 go build ./cmd/virt-freezer
+%if 0%{?build_handler}
 go build ./cmd/virt-handler
+%endif
 go build ./cmd/virt-launcher-monitor
 go build ./cmd/virt-launcher
 go build ./cmd/virt-operator
@@ -194,7 +196,9 @@ install -m 555 virt-controller %{buildroot}/usr/bin/virt-controller
 install -m 555 virt-exportproxy %{buildroot}/usr/bin/virt-exportproxy
 install -m 555 virt-exportserver %{buildroot}/usr/bin/virt-exportserver
 install -m 555 virt-freezer %{buildroot}/usr/bin/virt-freezer
+%if 0%{?build_handler}
 install -m 555 virt-handler %{buildroot}/usr/bin/virt-handler
+%endif
 install -m 555 virt-launcher-monitor %{buildroot}/usr/bin/virt-launcher-monitor
 install -m 555 virt-launcher %{buildroot}/usr/bin/virt-launcher
 install -m 555 virt-operator %{buildroot}/usr/bin/virt-operator
@@ -237,7 +241,9 @@ install -m 775 ./cmd/libguestfs/entrypoint.sh %{buildroot}/entrypoint.sh
 
 %files handler
 %license LICENSE THIRD_PARTY_LICENSES.txt
+%if 0%{?build_handler}
 /usr/bin/virt-handler
+%endif
 
 %files launcher-monitor
 %license LICENSE THIRD_PARTY_LICENSES.txt
