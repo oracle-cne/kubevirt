@@ -15,7 +15,7 @@ olcnePipeline(
     ('container-registry.oracle.com/olcne/virt-operator:v' + version): 'olcne/virt-operator:v' + version,
     ('container-registry.oracle.com/olcne/libguestfs-tools-image:v' + version): 'olcne/libguestfs-tools-image:v' + version,
   ],
-  yumOL7Repos: ['ol7_golang117'],
+  yumOL7Repos: ['ol7_golang117', 'ol7_optional_latest'],
   yumOL8Repos: ['ol8_appstream', 'ol8_codeready_builder'],
   ol8ModulesToEnable: ['virt:ol'],
   macros: [
