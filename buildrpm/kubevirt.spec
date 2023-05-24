@@ -172,20 +172,20 @@ A set of useful tools for interacting with VM filesystems.
 %setup -q
 
 %build
-go build ./cmd/virt-api
-go build ./cmd/virt-chroot
-go build ./cmd/virt-controller
-go build ./cmd/virt-exportproxy
-go build ./cmd/virt-exportserver
-go build ./cmd/virt-freezer
+go build -tag selinux ./cmd/virt-api
+go build -tag selinux ./cmd/virt-chroot
+go build -tag selinux ./cmd/virt-controller
+go build -tag selinux ./cmd/virt-exportproxy
+go build -tag selinux ./cmd/virt-exportserver
+go build -tag selinux ./cmd/virt-freezer
 %if 0%{?build_handler}
-go build ./cmd/virt-handler
+go build -tag selinux ./cmd/virt-handler
 %endif
-go build ./cmd/virt-launcher-monitor
-go build ./cmd/virt-launcher
-go build ./cmd/virt-operator
-go build ./cmd/virt-probe
-go build ./cmd/virtctl
+go build -tag selinux ./cmd/virt-launcher-monitor
+go build -tag selinux ./cmd/virt-launcher
+go build -tag selinux ./cmd/virt-operator
+go build -tag selinux ./cmd/virt-probe
+go build -tag selinux ./cmd/virtctl
 cc -o container-disk -static ./cmd/container-disk-v2alpha/main.c
 
 %install
