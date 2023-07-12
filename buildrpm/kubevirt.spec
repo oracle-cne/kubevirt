@@ -1,5 +1,6 @@
 {{{$version := printf "%s.%s.%s" .major .minor .patch}}}
 %global debug_package %{nil}
+%global _buildhost build-ol%{?oraclelinux}-%{?_arch}.oracle.com
 
 Name:		kubevirt
 Version:	{{{$version}}}
