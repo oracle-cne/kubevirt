@@ -3,14 +3,11 @@ FROM ${BASE_IMAGE}
 
 # These steps are translated from ./cmd/virt-handler/BUILD.bazel
 ARG PACKAGE
-RUN useradd -U -u 107 -s /bin/bash qemu
-RUN sh -c "dnf config-manager --enable ol8_kvm_appstream --enable ol8_UEKR7 && \
-    dnf module enable -y virt:ol && \
+RUN groupadd -g 107 qemu && useradd -u 107 -g qemu -s /bin/bash qemu
+RUN sh -c "dnf config-manager --enable ol9_appstream --enable ol9_UEKR7 && \
     dnf install -y "$PACKAGE" && \
     dnf clean all"
 ADD nsswitch.conf /etc/nsswitch.conf
-ADD ipv4-nat.nft /etc/nftables/ipv4-nat.nft
-ADD ipv6-nat.nft /etc/nftables/ipv6-nat.nft
 ADD virt_launcher.cil /virt_launcher.cil
 
 ENTRYPOINT ["/usr/bin/virt-handler"]

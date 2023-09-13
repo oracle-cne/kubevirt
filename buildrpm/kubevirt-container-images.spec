@@ -30,9 +30,10 @@ Container images for Kubevirt
 %setup -q -n %{name}-%{version}
 
 %build
-%global base_image container-registry.oracle.com/os/oraclelinux:8-slim
-%global base_image_full container-registry.oracle.com/os/oraclelinux:8
+%global base_image container-registry.oracle.com/os/oraclelinux:9-slim
+%global base_image_full container-registry.oracle.com/os/oraclelinux:9
 podman build \
+    --network=host \
     --build-arg BASE_IMAGE=%{base_image} \
     --build-arg PACKAGE=kubevirt-api-%{version}-%{release}\
     %{build_args} \
@@ -40,6 +41,7 @@ podman build \
 podman save -o virt_api.tar %{registry}/virt-api:v%{version}
 
 podman build \
+    --network=host \
     --build-arg BASE_IMAGE=%{base_image} \
     --build-arg PACKAGE=kubevirt-controller-%{version}-%{release}\
     %{build_args} \
@@ -47,6 +49,7 @@ podman build \
 podman save -o virt_controller.tar %{registry}/virt-controller:v%{version}
 
 podman build \
+    --network=host \
     --build-arg BASE_IMAGE=%{base_image} \
     --build-arg PACKAGE=kubevirt-operator-%{version}-%{release}\
     %{build_args} \
@@ -54,6 +57,7 @@ podman build \
 podman save -o virt_operator.tar %{registry}/virt-operator:v%{version}
 
 podman build \
+    --network=host \
     --build-arg BASE_IMAGE=%{base_image} \
     --build-arg PACKAGE=kubevirt-exportproxy-%{version}-%{release}\
     %{build_args} \
@@ -61,6 +65,7 @@ podman build \
 podman save -o virt_exportproxy.tar %{registry}/virt-exportproxy:v%{version}
 
 podman build \
+    --network=host \
     --build-arg BASE_IMAGE=%{base_image} \
     --build-arg PACKAGE=kubevirt-exportserver-%{version}-%{release}\
     %{build_args} \
@@ -68,6 +73,7 @@ podman build \
 podman save -o virt_exportserver.tar %{registry}/virt-exportserver:v%{version}
 
 podman build \
+    --network=host \
     --build-arg BASE_IMAGE=%{base_image_full} \
     --build-arg PACKAGE=kubevirt-launcher-%{version}-%{release}\
     %{build_args} \
@@ -75,6 +81,7 @@ podman build \
 podman save -o virt_launcher.tar %{registry}/virt-launcher:v%{version}
 
 podman build \
+    --network=host \
     --build-arg BASE_IMAGE=%{base_image_full} \
     --build-arg PACKAGE=kubevirt-handler-%{version}-%{release}\
     %{build_args} \
@@ -82,6 +89,7 @@ podman build \
 podman save -o virt_handler.tar %{registry}/virt-handler:v%{version}
 
 podman build \
+    --network=host \
     --build-arg BASE_IMAGE=%{base_image_full} \
     --build-arg PACKAGE=kubevirt-libguestfs-appliance-%{version}-%{release}\
     %{build_args} \
@@ -90,13 +98,13 @@ podman save -o libguestfs_tools_image.tar %{registry}/libguestfs-tools-image:v%{
 
 %install
 %__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_api.tar
-%__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_controller.tar
-%__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_operator.tar
-%__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_exportproxy.tar
-%__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_exportserver.tar
-%__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_handler.tar
-%__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_launcher.tar
-%__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/libguestfs_tools_image.tar
+%__install -D -m 644 virt_controller.tar %{buildroot}/usr/local/share/olcne/virt_controller.tar
+%__install -D -m 644 virt_operator.tar %{buildroot}/usr/local/share/olcne/virt_operator.tar
+%__install -D -m 644 virt_exportproxy.tar %{buildroot}/usr/local/share/olcne/virt_exportproxy.tar
+%__install -D -m 644 virt_exportserver.tar %{buildroot}/usr/local/share/olcne/virt_exportserver.tar
+%__install -D -m 644 virt_handler.tar %{buildroot}/usr/local/share/olcne/virt_handler.tar
+%__install -D -m 644 virt_launcher.tar %{buildroot}/usr/local/share/olcne/virt_launcher.tar
+%__install -D -m 644 libguestfs_tools_image.tar %{buildroot}/usr/local/share/olcne/libguestfs_tools_image.tar
 
 %files
 %license LICENSE
