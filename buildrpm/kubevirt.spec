@@ -249,11 +249,13 @@ install -m 775 ./cmd/libguestfs/entrypoint.sh %{buildroot}/entrypoint.sh
 %files launcher-monitor
 %license LICENSE THIRD_PARTY_LICENSES.txt
 /usr/bin/virt-launcher-monitor
+%caps(cap_net_bind_service=pe) /usr/bin/virt-launcher-monitor
 
 %files launcher
 %license LICENSE THIRD_PARTY_LICENSES.txt
 /usr/bin/virt-launcher
 /usr/bin/node-labeller.sh
+%caps(cap_net_bind_service=pe) /usr/bin/virt-launcher
 
 %files operator
 %license LICENSE THIRD_PARTY_LICENSES.txt

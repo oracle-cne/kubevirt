@@ -3,8 +3,7 @@ FROM ${BASE_IMAGE}
 
 ARG PACKAGE
 RUN useradd -d /home/nonroot-user -U -u 1001 -s /bin/bash nonroot-user
-RUN sh -c "dnf config-manager --enable ol8_kvm_appstream --enable ol8_UEKR7 && \
-    dnf module enable -y virt:ol && \
+RUN sh -c "dnf config-manager --enable ol9_appstream --enable ol9_UEKR7 && \
     dnf install -y "$PACKAGE" && \
     dnf clean all"
 USER 1001
