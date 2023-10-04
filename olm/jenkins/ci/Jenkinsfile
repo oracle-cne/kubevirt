@@ -23,6 +23,7 @@ olcnePipeline(
     'build_handler': params.PLATFORM_FILTER == "ol8" ? "1" : "0",
   ],
   platforms: ['ol8', 'ol9'],
+  architectures: ['x86_64', 'aarch64'],
   customPlatformStages: [
     customPlatformSteps: [
       ol8: [container: [enabled: false], buildContainerRpms: [enabled: false]],

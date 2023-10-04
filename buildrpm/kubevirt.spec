@@ -14,7 +14,6 @@ Source0:	%{name}-%{version}.tar.bz2
 BuildRequires:	libvirt-devel
 BuildRequires:  gcc
 BuildRequires:  glibc-static
-BuildRequires:  golang >= 1.17.13
 
 %package -n virtctl
 Summary: CLI for KubeVirt
@@ -79,8 +78,12 @@ Requires: libvirt-client
 Requires: libvirt-daemon-driver-qemu
 Requires: qemu-kvm-core
 # - launcher x86
+%ifarch %{arm} arm64 aarch64
+Requires: edk2-aarch64
+%else
 Requires: edk2-ovmf
 Requires: seabios
+%endif
 # - launcher extra
 Requires: ethtool
 Requires: findutils
@@ -117,8 +120,12 @@ Requires: libguestfs-appliance
 Requires: libguestfs-tools
 Requires: libvirt-daemon-driver-qemu
 Requires: qemu-kvm-core
-Requires: seabios
+%ifarch %{arm} arm64 aarch64
+Requires: edk2-aarch64
+%else
 Requires: edk2-ovmf
+Requires: seabios
+%endif
 
 %description
 Managed virtualized infrastructure within Kubernetes.
