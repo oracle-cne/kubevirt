@@ -14,6 +14,7 @@ Source0:	%{name}-%{version}.tar.bz2
 BuildRequires:	libvirt-devel
 BuildRequires:  gcc
 BuildRequires:  glibc-static
+BuildRequires:  golang >= 1.20.12
 
 %package -n virtctl
 Summary: CLI for KubeVirt
