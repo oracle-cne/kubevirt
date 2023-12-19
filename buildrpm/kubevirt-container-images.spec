@@ -21,6 +21,7 @@ Url:            https://github.com/kubevirt/kubevirt
 Source:         %{name}-%{version}.tar.bz2
 
 BuildRequires: podman
+BuildRequires: golang >= 1.20.12
 
 %description
 Container images for Kubevirt
