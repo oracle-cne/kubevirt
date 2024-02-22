@@ -11,7 +11,11 @@ License:	Apache License 2.0
 URL:		https://github.com/kubevirt/kubevirt
 Source0:	%{name}-%{version}.tar.bz2
 
+%if %{?oraclelinux} == 9
+BuildRequires:	libvirt-devel == 9.0.0
+%else
 BuildRequires:	libvirt-devel
+%endif
 BuildRequires:  gcc
 BuildRequires:  glibc-static
 BuildRequires:  golang >= 1.20.12
@@ -75,8 +79,13 @@ Requires: curl
 Requires: coreutils
 Requires: glibc-minimal-langpack
 # - launcher base
+%if %{?oraclelinux} == 9
+Requires: libvirt-client == 9.0.0
+Requires: libvirt-daemon-driver-qemu == 9.0.0
+%else
 Requires: libvirt-client
 Requires: libvirt-daemon-driver-qemu
+%endif
 Requires: qemu-kvm-core
 # - launcher x86
 %ifarch %{arm} arm64 aarch64
@@ -119,7 +128,11 @@ Summary: A set of useful utilities for interacting with VM filesystems
 Requires: libguestfs-appliance
 # - base
 Requires: libguestfs-tools
+%if %{?oraclelinux} == 9
+Requires: libvirt-daemon-driver-qemu == 9.0.0
+%else
 Requires: libvirt-daemon-driver-qemu
+%endif
 Requires: qemu-kvm-core
 %ifarch %{arm} arm64 aarch64
 Requires: edk2-aarch64
@@ -194,6 +207,7 @@ go build -tags selinux ./cmd/virt-launcher-monitor
 go build -tags selinux ./cmd/virt-launcher
 go build -tags selinux ./cmd/virt-operator
 go build -tags selinux ./cmd/virt-probe
+go build -tags selinux ./cmd/virt-tail
 go build -tags selinux ./cmd/virtctl
 cc -o container-disk -static ./cmd/container-disk-v2alpha/main.c
 
@@ -212,6 +226,7 @@ install -m 555 virt-launcher-monitor %{buildroot}/usr/bin/virt-launcher-monitor
 install -m 555 virt-launcher %{buildroot}/usr/bin/virt-launcher
 install -m 555 virt-operator %{buildroot}/usr/bin/virt-operator
 install -m 555 virt-probe %{buildroot}/usr/bin/virt-probe
+install -m 555 virt-tail %{buildroot}/usr/bin/virt-tail
 install -m 555 virtctl %{buildroot}/usr/bin/virtctl
 install -m 555 container-disk %{buildroot}/usr/bin/container-disk
 install -m 555 ./cmd/virt-launcher/node-labeller/node-labeller.sh %{buildroot}/usr/bin/node-labeller.sh
@@ -263,6 +278,7 @@ install -m 775 ./cmd/libguestfs/entrypoint.sh %{buildroot}/entrypoint.sh
 %license LICENSE THIRD_PARTY_LICENSES.txt
 /usr/bin/virt-launcher
 /usr/bin/node-labeller.sh
+/usr/bin/virt-tail
 %caps(cap_net_bind_service=pe) /usr/bin/virt-launcher
 
 %files operator
