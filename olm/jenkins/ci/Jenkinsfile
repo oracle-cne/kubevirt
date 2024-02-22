@@ -20,7 +20,6 @@ olcnePipeline(
   ol8ModulesToEnable: ['virt:ol'],
   macros: [
     'build_args':  '-v /etc/yum.repos.d/ol_artifacts.repo:/etc/yum.repos.d/ol_artifacts.repo -v /etc/yum/vars:/etc/yum/vars',
-    'build_handler': params.PLATFORM_FILTER == "ol8" ? "1" : "0",
   ],
   platforms: ['ol8', 'ol9'],
   architectures: ['x86_64', 'aarch64'],

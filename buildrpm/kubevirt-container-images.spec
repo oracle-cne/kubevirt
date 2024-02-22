@@ -83,11 +83,7 @@ podman build \
     --build-arg BASE_IMAGE=%{base_image_full} \
     --build-arg PACKAGE=kubevirt-launcher-%{version}-%{release}\
     %{build_args} \
-%if %{?oraclelinux} == 9
-    -t %{registry}/virt-launcher:%{image_tag} -f ./olm/builds/Dockerfile.virt-launcher.ol9 ./cmd/virt-launcher
-%else
     -t %{registry}/virt-launcher:%{image_tag} -f ./olm/builds/Dockerfile.virt-launcher ./cmd/virt-launcher
-%endif
 podman save -o virt_launcher.tar %{registry}/virt-launcher:%{image_tag}
 
 podman build \
@@ -95,11 +91,7 @@ podman build \
     --build-arg BASE_IMAGE=%{base_image_full} \
     --build-arg PACKAGE=kubevirt-handler-%{version}-%{release}\
     %{build_args} \
-%if %{?oraclelinux} == 9
-    -t %{registry}/virt-handler:%{image_tag} -f ./olm/builds/Dockerfile.virt-handler.ol9 ./cmd/virt-handler
-%else
     -t %{registry}/virt-handler:%{image_tag} -f ./olm/builds/Dockerfile.virt-handler ./cmd/virt-handler
-%endif
 podman save -o virt_handler.tar %{registry}/virt-handler:%{image_tag}
 
 podman build \
@@ -107,11 +99,7 @@ podman build \
     --build-arg BASE_IMAGE=%{base_image_full} \
     --build-arg PACKAGE=kubevirt-libguestfs-appliance-%{version}-%{release}\
     %{build_args} \
-%if %{?oraclelinux} == 9
-    -t %{registry}/libguestfs-tools-image:%{image_tag} -f ./olm/builds/Dockerfile.libguestfs-tools-image.ol9 ./olm/builds
-%else
     -t %{registry}/libguestfs-tools-image:%{image_tag} -f ./olm/builds/Dockerfile.libguestfs-tools-image ./olm/builds
-%endif
 podman save -o libguestfs_tools_image.tar %{registry}/libguestfs-tools-image:%{image_tag}
 
 %install
