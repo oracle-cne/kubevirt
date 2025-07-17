@@ -1,6 +1,7 @@
 {{{$version := printf "%s.%s.%s" .major .minor .patch}}}
 %global debug_package %{nil}
 %global _buildhost build-ol%{?oraclelinux}-%{?_arch}.oracle.com
+%global build_handler 1
 
 Name:		kubevirt
 Version:	{{{$version}}}
@@ -194,21 +195,21 @@ A set of useful tools for interacting with VM filesystems.
 %setup -q
 
 %build
-go build -tags selinux ./cmd/virt-api
-go build -tags selinux ./cmd/virt-chroot
-go build -tags selinux ./cmd/virt-controller
-go build -tags selinux ./cmd/virt-exportproxy
-go build -tags selinux ./cmd/virt-exportserver
-go build -tags selinux ./cmd/virt-freezer
+go build -trimpath=false -tags selinux -ldflags="-X main.version=v%{version}" ./cmd/virt-api
+go build -trimpath=false -tags selinux -ldflags="-X main.version=v%{version}" ./cmd/virt-chroot
+go build -trimpath=false -tags selinux -ldflags="-X main.version=v%{version}" ./cmd/virt-controller
+go build -trimpath=false -tags selinux -ldflags="-X main.version=v%{version}" ./cmd/virt-exportproxy
+go build -trimpath=false -tags selinux -ldflags="-X main.version=v%{version}" ./cmd/virt-exportserver
+go build -trimpath=false -tags selinux -ldflags="-X main.version=v%{version}" ./cmd/virt-freezer
 %if 0%{?build_handler}
-go build -tags selinux ./cmd/virt-handler
+go build -trimpath=false -tags selinux -ldflags="-X main.version=v%{version}" ./cmd/virt-handler
 %endif
-go build -tags selinux ./cmd/virt-launcher-monitor
-go build -tags selinux ./cmd/virt-launcher
-go build -tags selinux ./cmd/virt-operator
-go build -tags selinux ./cmd/virt-probe
-go build -tags selinux ./cmd/virt-tail
-go build -tags selinux ./cmd/virtctl
+go build -trimpath=false -tags selinux -ldflags="-X main.version=v%{version}" ./cmd/virt-launcher-monitor
+go build -trimpath=false -tags selinux -ldflags="-X main.version=v%{version}" ./cmd/virt-launcher
+go build -trimpath=false -tags selinux -ldflags="-X main.version=v%{version}" ./cmd/virt-operator
+go build -trimpath=false -tags selinux -ldflags="-X main.version=v%{version}" ./cmd/virt-probe
+go build -trimpath=false -tags selinux -ldflags="-X main.version=v%{version}" ./cmd/virt-tail
+go build -trimpath=false -tags selinux -ldflags="-X main.version=v%{version}" ./cmd/virtctl
 cc -o container-disk -static ./cmd/container-disk-v2alpha/main.c
 
 %install
