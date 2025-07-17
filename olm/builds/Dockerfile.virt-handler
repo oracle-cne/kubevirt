@@ -8,6 +8,5 @@ RUN sh -c "dnf config-manager --enable ol9_appstream --enable ol9_UEKR7 && \
     dnf install -y "$PACKAGE" && \
     dnf clean all"
 ADD nsswitch.conf /etc/nsswitch.conf
-ADD virt_launcher.cil /virt_launcher.cil
 
 ENTRYPOINT ["/usr/bin/virt-handler"]
