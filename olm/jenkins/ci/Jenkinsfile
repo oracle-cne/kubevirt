@@ -4,7 +4,7 @@ import com.oracle.olcne.pipeline.BranchPattern
 String version = "{{{printf "%s.%s.%s" .major .minor .patch}}}"
 
 olcnePipeline(
-  branchPattern: new BranchPattern(master: 'oracle/release/.*', feature: 'feature/.*'),
+  branchPattern: new BranchPattern(master: 'oracle/release/.*', feature: '(?!^release/.*$)(^.*$)'),
   containers: [
     ('container-registry.oracle.com/olcne/virt-api:v' + version): 'olcne/virt-api:v' + version,
     ('container-registry.oracle.com/olcne/virt-controller:v' + version): 'olcne/virt-controller:v' + version,
