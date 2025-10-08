@@ -1,0 +1,32 @@
+@Library('olcne-pipeline')
+import com.oracle.olcne.pipeline.BranchPattern
+
+String version = "1.6.2"
+
+olcnePipeline(
+  branchPattern: new BranchPattern(master: 'oracle/release/.*', feature: '(?!^release/.*$)(^.*$)'),
+  containers: [
+    ('container-registry.oracle.com/olcne/virt-api:v' + version): 'olcne/virt-api:v' + version,
+    ('container-registry.oracle.com/olcne/virt-controller:v' + version): 'olcne/virt-controller:v' + version,
+    ('container-registry.oracle.com/olcne/virt-exportproxy:v' + version): 'olcne/virt-exportproxy:v' + version,
+    ('container-registry.oracle.com/olcne/virt-exportserver:v' + version): 'olcne/virt-exportserver:v' + version,
+    ('container-registry.oracle.com/olcne/virt-launcher:v' + version): 'olcne/virt-launcher:v' + version,
+    ('container-registry.oracle.com/olcne/virt-handler:v' + version): 'olcne/virt-handler:v' + version,
+    ('container-registry.oracle.com/olcne/virt-operator:v' + version): 'olcne/virt-operator:v' + version,
+    ('container-registry.oracle.com/olcne/libguestfs-tools-image:v' + version): 'olcne/libguestfs-tools-image:v' + version,
+  ],
+  yumOL8Repos: ['ol8_appstream', 'ol8_codeready_builder'],
+  yumOL9Repos: ['ol9_appstream', 'ol9_codeready_builder', 'ol9_developer_EPEL'],
+  ol8ModulesToEnable: ['virt:ol'],
+  macros: [
+    'build_args':  '-v /etc/yum.repos.d/ol_artifacts.repo:/etc/yum.repos.d/ol_artifacts.repo -v /etc/yum/vars:/etc/yum/vars',
+  ],
+  platforms: ['ol8', 'ol9'],
+  architectures: ['x86_64', 'aarch64'],
+  customPlatformStages: [
+    customPlatformSteps: [
+      ol8: [container: [enabled: false], buildContainerRpms: [enabled: false]],
+      ol9: [container: [enabled: true], buildContainerRpms: [enabled: true]],
+    ],
+  ],
+)
