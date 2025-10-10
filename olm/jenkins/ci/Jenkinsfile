@@ -1,4 +1,4 @@
-@Library('olcne-pipeline@feature/fix-build')
+@Library('olcne-pipeline')
 import com.oracle.olcne.pipeline.BranchPattern
 
 String version = "1.6.2"
