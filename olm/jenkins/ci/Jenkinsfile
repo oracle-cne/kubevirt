@@ -17,7 +17,6 @@ olcnePipeline(
   ],
   yumOL8Repos: ['ol8_appstream', 'ol8_codeready_builder'],
   yumOL9Repos: ['ol9_appstream', 'ol9_codeready_builder', 'ol9_developer_EPEL'],
-  ol8ModulesToEnable: ['virt:ol'],
   macros: [
     'build_args':  '-v /etc/yum.repos.d/ol_artifacts.repo:/etc/yum.repos.d/ol_artifacts.repo -v /etc/yum/vars:/etc/yum/vars',
   ],
