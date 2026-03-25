@@ -20,9 +20,11 @@
 package storage
 
 import (
+	"errors"
 	"fmt"
 	"sort"
 	"strings"
+	"syscall"
 
 	"libguestfs.org/libnbd"
 
@@ -45,6 +47,9 @@ func NewNBDClient(socketPath string) *NBDClient {
 }
 
 type sendFn func(*nbdv1.MapResponse) error
+
+type blockStatus64Func func(uint64, uint64, libnbd.Extent64Callback, *libnbd.BlockStatus64Optargs) error
+type blockStatusFunc func(uint64, uint64, libnbd.ExtentCallback, *libnbd.BlockStatusOptargs) error
 
 // mapBuilder accumulates, coalesces, and batches extents.
 type mapBuilder struct {
@@ -148,6 +153,43 @@ func sortedContextsByOffset(lastExtents map[string]*nbdv1.Extent) []string {
 	return contexts
 }
 
+func blockStatusCompat(blockStatus64 blockStatus64Func, blockStatus blockStatusFunc, count, offset uint64, extent64 libnbd.Extent64Callback) error {
+	err := blockStatus64(count, offset, extent64, nil)
+	if err == nil || !isBlockStatus64Unsupported(err) {
+		return err
+	}
+
+	return blockStatus(count, offset,
+		func(metacontext string, offset uint64, entries []uint32, nbdErr *int) int {
+			extents, convErr := legacyExtentsToLibnbdExtents(entries)
+			if convErr != nil {
+				*nbdErr = 1
+				return -1
+			}
+			return extent64(metacontext, offset, extents, nbdErr)
+		}, nil)
+}
+
+func isBlockStatus64Unsupported(err error) bool {
+	var libnbdErr *libnbd.LibnbdError
+	return errors.As(err, &libnbdErr) && libnbdErr.Errno == syscall.ENOTSUP
+}
+
+func legacyExtentsToLibnbdExtents(entries []uint32) ([]libnbd.LibnbdExtent, error) {
+	if len(entries)%2 != 0 {
+		return nil, fmt.Errorf("expected extent pairs, got %d values", len(entries))
+	}
+
+	extents := make([]libnbd.LibnbdExtent, 0, len(entries)/2)
+	for i := 0; i < len(entries); i += 2 {
+		extents = append(extents, libnbd.LibnbdExtent{
+			Length: uint64(entries[i]),
+			Flags:  uint64(entries[i+1]),
+		})
+	}
+	return extents, nil
+}
+
 // based on https://gitlab.com/nbdkit/libnbd/-/blob/master/info/map.c
 func (c *NBDClient) Map(req *nbdv1.MapRequest, stream nbdv1.NBD_MapServer) error {
 	l, err := libnbd.Create()
@@ -194,7 +236,7 @@ func (c *NBDClient) Map(req *nbdv1.MapRequest, stream nbdv1.NBD_MapServer) error
 		default:
 		}
 		prevOffset := currentOffset
-		err := l.BlockStatus64(endOffset-currentOffset, currentOffset,
+		err := blockStatusCompat(l.BlockStatus64, l.BlockStatus, endOffset-currentOffset, currentOffset,
 			func(metacontext string, offset uint64, entries []libnbd.LibnbdExtent, nbdErr *int) int {
 				maxOffset, err := builder.HandleExtents(metacontext, offset, entries)
 				if err != nil {
@@ -205,12 +247,12 @@ func (c *NBDClient) Map(req *nbdv1.MapRequest, stream nbdv1.NBD_MapServer) error
 					currentOffset = maxOffset
 				}
 				return 0
-			}, nil)
+			})
 		if err != nil {
-			return fmt.Errorf("BlockStatus64 at offset %d: %w", prevOffset, err)
+			return fmt.Errorf("block status at offset %d: %w", prevOffset, err)
 		}
 		if currentOffset <= prevOffset {
-			return fmt.Errorf("BlockStatus64 returned no forward progress at offset %d for context %s", prevOffset, requestedContext)
+			return fmt.Errorf("block status returned no forward progress at offset %d for context %s", prevOffset, requestedContext)
 		}
 	}
 
