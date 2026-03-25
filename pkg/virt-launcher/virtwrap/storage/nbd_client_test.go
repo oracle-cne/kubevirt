@@ -22,6 +22,7 @@ package storage
 import (
 	"errors"
 	"fmt"
+	"syscall"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -128,6 +129,58 @@ var _ = Describe("NBDClient", func() {
 				"ext-b": {Offset: 200},
 			}
 			Expect(sortedContextsByOffset(extents)).To(Equal([]string{"ext-a", "ext-b", "ext-c"}))
+		})
+	})
+
+	Context("blockStatusCompat", func() {
+		It("should convert legacy extent pairs to 64-bit extents", func() {
+			extents, err := legacyExtentsToLibnbdExtents([]uint32{
+				512, 0,
+				256, uint32(libnbd.STATE_HOLE),
+			})
+			Expect(err).NotTo(HaveOccurred())
+			Expect(extents).To(Equal([]libnbd.LibnbdExtent{
+				{Length: 512, Flags: 0},
+				{Length: 256, Flags: uint64(libnbd.STATE_HOLE)},
+			}))
+		})
+
+		It("should reject malformed legacy extent pairs", func() {
+			_, err := legacyExtentsToLibnbdExtents([]uint32{512, 0, 128})
+			Expect(err).To(MatchError("expected extent pairs, got 3 values"))
+		})
+
+		It("should fall back to legacy block status when the 64-bit API is unavailable", func() {
+			currentOffset := uint64(0)
+			builder := newMapBuilder(1024, 512, func(*nbdv1.MapResponse) error { return nil })
+
+			err := blockStatusCompat(
+				func(uint64, uint64, libnbd.Extent64Callback, *libnbd.BlockStatus64Optargs) error {
+					return &libnbd.LibnbdError{Op: "block_status_64", Errmsg: "unsupported", Errno: syscall.ENOTSUP}
+				},
+				func(count, offset uint64, extent libnbd.ExtentCallback, _ *libnbd.BlockStatusOptargs) error {
+					Expect(count).To(Equal(uint64(1024)))
+					Expect(offset).To(Equal(uint64(0)))
+					nbdErr := 0
+					ret := extent(libnbd.CONTEXT_BASE_ALLOCATION, 0, []uint32{256, 0}, &nbdErr)
+					Expect(ret).To(Equal(0))
+					Expect(nbdErr).To(Equal(0))
+					return nil
+				},
+				1024,
+				0,
+				func(metacontext string, offset uint64, entries []libnbd.LibnbdExtent, nbdErr *int) int {
+					maxOffset, err := builder.HandleExtents(metacontext, offset, entries)
+					Expect(err).NotTo(HaveOccurred())
+					if maxOffset > currentOffset {
+						currentOffset = maxOffset
+					}
+					return 0
+				},
+			)
+
+			Expect(err).NotTo(HaveOccurred())
+			Expect(currentOffset).To(Equal(uint64(256)))
 		})
 	})
 
