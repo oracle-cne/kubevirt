@@ -41,7 +41,7 @@ Container images for Kubevirt
 podman build \
     --network=host \
     --build-arg BASE_IMAGE=%{base_image} \
-    --build-arg PACKAGE=kubevirt-api-%{version}-%{release}\
+    --build-arg PACKAGE=kubevirt-api-%{version}-%{release}.%{_arch}\
     %{build_args} \
     -t %{registry}/virt-api:%{image_tag} -f ./olm/builds/Dockerfile.virt-api ./olm/builds
 podman save -o virt_api.tar %{registry}/virt-api:%{image_tag}
@@ -49,7 +49,7 @@ podman save -o virt_api.tar %{registry}/virt-api:%{image_tag}
 podman build \
     --network=host \
     --build-arg BASE_IMAGE=%{base_image} \
-    --build-arg PACKAGE=kubevirt-controller-%{version}-%{release}\
+    --build-arg PACKAGE=kubevirt-controller-%{version}-%{release}.%{_arch}\
     %{build_args} \
     -t %{registry}/virt-controller:%{image_tag} -f ./olm/builds/Dockerfile.virt-controller ./olm/builds
 podman save -o virt_controller.tar %{registry}/virt-controller:%{image_tag}
@@ -57,7 +57,7 @@ podman save -o virt_controller.tar %{registry}/virt-controller:%{image_tag}
 podman build \
     --network=host \
     --build-arg BASE_IMAGE=%{base_image} \
-    --build-arg PACKAGE=kubevirt-operator-%{version}-%{release}\
+    --build-arg PACKAGE=kubevirt-operator-%{version}-%{release}.%{_arch}\
     %{build_args} \
     -t %{registry}/virt-operator:%{image_tag} -f ./olm/builds/Dockerfile.virt-operator ./olm/builds
 podman save -o virt_operator.tar %{registry}/virt-operator:%{image_tag}
@@ -65,7 +65,7 @@ podman save -o virt_operator.tar %{registry}/virt-operator:%{image_tag}
 podman build \
     --network=host \
     --build-arg BASE_IMAGE=%{base_image} \
-    --build-arg PACKAGE=kubevirt-exportproxy-%{version}-%{release}\
+    --build-arg PACKAGE=kubevirt-exportproxy-%{version}-%{release}.%{_arch}\
     %{build_args} \
     -t %{registry}/virt-exportproxy:%{image_tag} -f ./olm/builds/Dockerfile.virt-exportproxy ./olm/builds
 podman save -o virt_exportproxy.tar %{registry}/virt-exportproxy:%{image_tag}
@@ -73,7 +73,7 @@ podman save -o virt_exportproxy.tar %{registry}/virt-exportproxy:%{image_tag}
 podman build \
     --network=host \
     --build-arg BASE_IMAGE=%{base_image} \
-    --build-arg PACKAGE=kubevirt-exportserver-%{version}-%{release}\
+    --build-arg PACKAGE=kubevirt-exportserver-%{version}-%{release}.%{_arch}\
     %{build_args} \
     -t %{registry}/virt-exportserver:%{image_tag} -f ./olm/builds/Dockerfile.virt-exportserver ./olm/builds
 podman save -o virt_exportserver.tar %{registry}/virt-exportserver:%{image_tag}
@@ -81,7 +81,7 @@ podman save -o virt_exportserver.tar %{registry}/virt-exportserver:%{image_tag}
 podman build \
     --network=host \
     --build-arg BASE_IMAGE=%{base_image_full} \
-    --build-arg PACKAGE=kubevirt-launcher-%{version}-%{release}\
+    --build-arg PACKAGE=kubevirt-launcher-%{version}-%{release}.%{_arch}\
     %{build_args} \
     -t %{registry}/virt-launcher:%{image_tag} -f ./olm/builds/Dockerfile.virt-launcher ./cmd/virt-launcher
 podman save -o virt_launcher.tar %{registry}/virt-launcher:%{image_tag}
@@ -89,7 +89,7 @@ podman save -o virt_launcher.tar %{registry}/virt-launcher:%{image_tag}
 podman build \
     --network=host \
     --build-arg BASE_IMAGE=%{base_image_full} \
-    --build-arg PACKAGE=kubevirt-handler-%{version}-%{release}\
+    --build-arg PACKAGE=kubevirt-handler-%{version}-%{release}.%{_arch}\
     %{build_args} \
     -t %{registry}/virt-handler:%{image_tag} -f ./olm/builds/Dockerfile.virt-handler ./cmd/virt-handler
 podman save -o virt_handler.tar %{registry}/virt-handler:%{image_tag}
@@ -97,7 +97,7 @@ podman save -o virt_handler.tar %{registry}/virt-handler:%{image_tag}
 podman build \
     --network=host \
     --build-arg BASE_IMAGE=%{base_image_full} \
-    --build-arg PACKAGE=kubevirt-libguestfs-appliance-%{version}-%{release}\
+    --build-arg PACKAGE=kubevirt-libguestfs-appliance-%{version}-%{release}.%{_arch}\
     %{build_args} \
     -t %{registry}/libguestfs-tools-image:%{image_tag} -f ./olm/builds/Dockerfile.libguestfs-tools-image ./olm/builds
 podman save -o libguestfs_tools_image.tar %{registry}/libguestfs-tools-image:%{image_tag}
