@@ -4371,8 +4371,7 @@ kubevirt.io/virt-template-client-go
 SPDX:Apache-2.0
 
 == Copyright
-Copyright The KubeVirt Authors
-Copyright The KubeVirt Authors.
+(no copyright notices found)
 
 --------------------------------- (separator) ----------------------------------
 
