@@ -20,6 +20,7 @@ BuildRequires:	libvirt-devel
 BuildRequires:  gcc
 BuildRequires:  glibc-static
 BuildRequires:  golang >= 1.20.12
+BuildRequires:  pkgconfig(libnbd)
 
 %package -n virtctl
 Summary: CLI for KubeVirt
@@ -301,4 +302,3 @@ install -m 775 ./cmd/libguestfs/entrypoint.sh %{buildroot}/entrypoint.sh
 %changelog
 * Wed Mar 25 2026 Oracle Cloud Native Environment Authors <noreply@oracle.com> - 1.8.0-1
 - Initial Release
-
