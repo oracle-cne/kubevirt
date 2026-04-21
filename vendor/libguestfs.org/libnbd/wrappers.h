@@ -30,6 +30,18 @@
 
 #include "libnbd.h"
 
+/* Older libnbd releases do not declare the 64-bit block status callback
+ * types, but the generated bindings still reference them even when the
+ * related entry points are compiled out below.
+ */
+#ifndef LIBNBD_HAVE_NBD_BLOCK_STATUS_64
+typedef struct {
+  uint64_t length;
+  uint32_t flags;
+} nbd_extent;
+typedef nbd_extent_callback nbd_extent64_callback;
+#endif
+
 /* When calling callbacks we pass the callback ID (a golang int /
  * C.long) in the void *user_data field.  We need to create a block
  * to store the callback number.  This must be freed by C.free(vp)
