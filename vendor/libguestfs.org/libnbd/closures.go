@@ -46,16 +46,6 @@ func copy_uint32_array(entries *C.uint32_t, count C.size_t) []uint32 {
 	return ret
 }
 
-func copy_extent_array(entries *C.nbd_extent, count C.size_t) []LibnbdExtent {
-	ret := make([]LibnbdExtent, count)
-	s := unsafe.Slice(entries, count)
-	for i, item := range s {
-		ret[i].Length = uint64(item.length)
-		ret[i].Flags = uint64(item.flags)
-	}
-	return ret
-}
-
 type ChunkCallback func(subbuf []byte, offset uint64, status uint, error *int) int
 
 //export chunk_callback
@@ -110,21 +100,6 @@ func extent_callback(callbackid *C.long, metacontext *C.char, offset C.uint64_t,
 	}
 	go_error := int(*error)
 	ret := callback(C.GoString(metacontext), uint64(offset), copy_uint32_array(entries, nr_entries), &go_error)
-	*error = C.int(go_error)
-	return C.int(ret)
-}
-
-type Extent64Callback func(metacontext string, offset uint64, entries []LibnbdExtent, error *int) int
-
-//export extent64_callback
-func extent64_callback(callbackid *C.long, metacontext *C.char, offset C.uint64_t, entries *C.nbd_extent, nr_entries C.size_t, error *C.int) C.int {
-	callbackFunc := getCallbackId(int(*callbackid))
-	callback, ok := callbackFunc.(Extent64Callback)
-	if !ok {
-		panic("inappropriate callback type")
-	}
-	go_error := int(*error)
-	ret := callback(C.GoString(metacontext), uint64(offset), copy_extent_array(entries, nr_entries), &go_error)
 	*error = C.int(go_error)
 	return C.int(ret)
 }

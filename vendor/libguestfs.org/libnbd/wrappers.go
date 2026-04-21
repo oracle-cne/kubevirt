@@ -1750,44 +1750,6 @@ _nbd_block_status_wrapper (struct error *err,
 }
 
 int
-_nbd_block_status_64_wrapper (struct error *err,
-        struct nbd_handle *h, uint64_t count, uint64_t offset,
-        nbd_extent64_callback extent64_callback, uint32_t flags)
-{
-#ifdef LIBNBD_HAVE_NBD_BLOCK_STATUS_64
-  int ret;
-
-  ret = nbd_block_status_64 (h, count, offset, extent64_callback, flags);
-  if (ret == -1)
-    save_error (err);
-  return ret;
-#else // !LIBNBD_HAVE_NBD_BLOCK_STATUS_64
-  missing_function (err, "block_status_64");
-  return -1;
-#endif
-}
-
-int
-_nbd_block_status_filter_wrapper (struct error *err,
-        struct nbd_handle *h, uint64_t count, uint64_t offset,
-        char **contexts, nbd_extent64_callback extent64_callback,
-        uint32_t flags)
-{
-#ifdef LIBNBD_HAVE_NBD_BLOCK_STATUS_FILTER
-  int ret;
-
-  ret = nbd_block_status_filter (h, count, offset, contexts,
-                                 extent64_callback, flags);
-  if (ret == -1)
-    save_error (err);
-  return ret;
-#else // !LIBNBD_HAVE_NBD_BLOCK_STATUS_FILTER
-  missing_function (err, "block_status_filter");
-  return -1;
-#endif
-}
-
-int
 _nbd_poll_wrapper (struct error *err,
         struct nbd_handle *h, int timeout)
 {
@@ -2322,47 +2284,6 @@ _nbd_aio_block_status_wrapper (struct error *err,
 #endif
 }
 
-int64_t
-_nbd_aio_block_status_64_wrapper (struct error *err,
-        struct nbd_handle *h, uint64_t count, uint64_t offset,
-        nbd_extent64_callback extent64_callback,
-        nbd_completion_callback completion_callback, uint32_t flags)
-{
-#ifdef LIBNBD_HAVE_NBD_AIO_BLOCK_STATUS_64
-  int64_t ret;
-
-  ret = nbd_aio_block_status_64 (h, count, offset, extent64_callback,
-                                 completion_callback, flags);
-  if (ret == -1)
-    save_error (err);
-  return ret;
-#else // !LIBNBD_HAVE_NBD_AIO_BLOCK_STATUS_64
-  missing_function (err, "aio_block_status_64");
-  return -1;
-#endif
-}
-
-int64_t
-_nbd_aio_block_status_filter_wrapper (struct error *err,
-        struct nbd_handle *h, uint64_t count, uint64_t offset,
-        char **contexts, nbd_extent64_callback extent64_callback,
-        nbd_completion_callback completion_callback, uint32_t flags)
-{
-#ifdef LIBNBD_HAVE_NBD_AIO_BLOCK_STATUS_FILTER
-  int64_t ret;
-
-  ret = nbd_aio_block_status_filter (h, count, offset, contexts,
-                                     extent64_callback, completion_callback,
-                                     flags);
-  if (ret == -1)
-    save_error (err);
-  return ret;
-#else // !LIBNBD_HAVE_NBD_AIO_BLOCK_STATUS_FILTER
-  missing_function (err, "aio_block_status_filter");
-  return -1;
-#endif
-}
-
 int
 _nbd_aio_get_fd_wrapper (struct error *err,
         struct nbd_handle *h)
@@ -2847,24 +2768,6 @@ _nbd_extent_callback_wrapper (void *user_data, const char *metacontext,
 
 void
 _nbd_extent_callback_free (void *user_data)
-{
-  long *p = user_data;
-  extern void nbd_internal_freeCallbackId (long);
-  nbd_internal_freeCallbackId (*p);
-  free (p);
-}
-
-int
-_nbd_extent64_callback_wrapper (void *user_data, const char *metacontext,
-                                uint64_t offset, nbd_extent *entries,
-                                size_t nr_entries, int *error)
-{
-  // golang isn't const-correct, casts avoid warnings here:
-  return extent64_callback ((long *)user_data, (char *)metacontext, offset, entries, nr_entries, error);
-}
-
-void
-_nbd_extent64_callback_free (void *user_data)
 {
   long *p = user_data;
   extern void nbd_internal_freeCallbackId (long);

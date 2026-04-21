@@ -41,7 +41,11 @@ Container images for Kubevirt
 local_rpm_repo_dir="$PWD/kubevirt-local-rpms"
 rm -rf "$local_rpm_repo_dir"
 mkdir -p "$local_rpm_repo_dir"
-find %{_topdir}/RPMS -name 'kubevirt-*-%{version}-%{release}*.rpm' -exec cp {} "$local_rpm_repo_dir"/ \;
+for rpm_source_dir in /shared %{_topdir}/RPMS; do
+    if [ -d "$rpm_source_dir" ]; then
+        find "$rpm_source_dir" -name 'kubevirt-*-%{version}-%{release}*.rpm' -exec cp -n {} "$local_rpm_repo_dir"/ \;
+    fi
+done
 createrepo_c "$local_rpm_repo_dir"
 %global image_tag v%{version}
 podman build \

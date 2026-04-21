@@ -290,13 +290,6 @@ int _nbd_zero_wrapper (struct error *err,
 int _nbd_block_status_wrapper (struct error *err,
         struct nbd_handle *h, uint64_t count, uint64_t offset,
         nbd_extent_callback extent_callback, uint32_t flags);
-int _nbd_block_status_64_wrapper (struct error *err,
-        struct nbd_handle *h, uint64_t count, uint64_t offset,
-        nbd_extent64_callback extent64_callback, uint32_t flags);
-int _nbd_block_status_filter_wrapper (struct error *err,
-        struct nbd_handle *h, uint64_t count, uint64_t offset,
-        char **contexts, nbd_extent64_callback extent64_callback,
-        uint32_t flags);
 int _nbd_poll_wrapper (struct error *err,
         struct nbd_handle *h, int timeout);
 int _nbd_poll2_wrapper (struct error *err,
@@ -375,14 +368,6 @@ int64_t _nbd_aio_zero_wrapper (struct error *err,
 int64_t _nbd_aio_block_status_wrapper (struct error *err,
         struct nbd_handle *h, uint64_t count, uint64_t offset,
         nbd_extent_callback extent_callback,
-        nbd_completion_callback completion_callback, uint32_t flags);
-int64_t _nbd_aio_block_status_64_wrapper (struct error *err,
-        struct nbd_handle *h, uint64_t count, uint64_t offset,
-        nbd_extent64_callback extent64_callback,
-        nbd_completion_callback completion_callback, uint32_t flags);
-int64_t _nbd_aio_block_status_filter_wrapper (struct error *err,
-        struct nbd_handle *h, uint64_t count, uint64_t offset,
-        char **contexts, nbd_extent64_callback extent64_callback,
         nbd_completion_callback completion_callback, uint32_t flags);
 int _nbd_aio_get_fd_wrapper (struct error *err,
         struct nbd_handle *h);
@@ -463,15 +448,6 @@ int _nbd_extent_callback_wrapper (void *user_data, const char *metacontext,
                                   uint64_t offset, uint32_t *entries,
                                   size_t nr_entries, int *error);
 void _nbd_extent_callback_free (void *user_data);
-
-extern int extent64_callback (long *callbackid, char *metacontext, uint64_t offset, nbd_extent *entries, size_t nr_entries, int *error);
-
-
-int _nbd_extent64_callback_wrapper (void *user_data,
-                                    const char *metacontext,
-                                    uint64_t offset, nbd_extent *entries,
-                                    size_t nr_entries, int *error);
-void _nbd_extent64_callback_free (void *user_data);
 
 extern int list_callback (long *callbackid, char *name, char *description);
 
