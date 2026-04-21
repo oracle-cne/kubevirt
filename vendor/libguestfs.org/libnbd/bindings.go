@@ -2177,6 +2177,84 @@ func (h *Libnbd) BlockStatus(count uint64, offset uint64, extent ExtentCallback,
 	return nil
 }
 
+/* Struct carrying optional arguments for BlockStatus64. */
+type BlockStatus64Optargs struct {
+	/* Flags field is ignored unless FlagsSet == true. */
+	FlagsSet bool
+	Flags    CmdFlag
+}
+
+/* BlockStatus64: send block status command, with 64-bit callback */
+func (h *Libnbd) BlockStatus64(count uint64, offset uint64, extent64 Extent64Callback, optargs *BlockStatus64Optargs) error {
+	if h.h == nil {
+		return closed_handle_error("block_status_64")
+	}
+
+	var c_err C.struct_error
+	c_count := C.uint64_t(count)
+	c_offset := C.uint64_t(offset)
+	var c_extent64 C.nbd_extent64_callback
+	c_extent64.callback = (*[0]byte)(C._nbd_extent64_callback_wrapper)
+	c_extent64.free = (*[0]byte)(C._nbd_extent64_callback_free)
+	extent64_cbid := registerCallbackId(extent64)
+	c_extent64.user_data = C.alloc_cbid(C.long(extent64_cbid))
+	var c_flags C.uint32_t
+	if optargs != nil {
+		if optargs.FlagsSet {
+			c_flags = C.uint32_t(optargs.Flags)
+		}
+	}
+
+	ret := C._nbd_block_status_64_wrapper(&c_err, h.h, c_count, c_offset, c_extent64, c_flags)
+	runtime.KeepAlive(h.h)
+	if ret == -1 {
+		err := get_error("block_status_64", c_err)
+		C.free_error(&c_err)
+		return err
+	}
+	return nil
+}
+
+/* Struct carrying optional arguments for BlockStatusFilter. */
+type BlockStatusFilterOptargs struct {
+	/* Flags field is ignored unless FlagsSet == true. */
+	FlagsSet bool
+	Flags    CmdFlag
+}
+
+/* BlockStatusFilter: send filtered block status command, with 64-bit callback */
+func (h *Libnbd) BlockStatusFilter(count uint64, offset uint64, contexts []string, extent64 Extent64Callback, optargs *BlockStatusFilterOptargs) error {
+	if h.h == nil {
+		return closed_handle_error("block_status_filter")
+	}
+
+	var c_err C.struct_error
+	c_count := C.uint64_t(count)
+	c_offset := C.uint64_t(offset)
+	c_contexts := arg_string_list(contexts)
+	defer free_string_list(c_contexts)
+	var c_extent64 C.nbd_extent64_callback
+	c_extent64.callback = (*[0]byte)(C._nbd_extent64_callback_wrapper)
+	c_extent64.free = (*[0]byte)(C._nbd_extent64_callback_free)
+	extent64_cbid := registerCallbackId(extent64)
+	c_extent64.user_data = C.alloc_cbid(C.long(extent64_cbid))
+	var c_flags C.uint32_t
+	if optargs != nil {
+		if optargs.FlagsSet {
+			c_flags = C.uint32_t(optargs.Flags)
+		}
+	}
+
+	ret := C._nbd_block_status_filter_wrapper(&c_err, h.h, c_count, c_offset, &c_contexts[0], c_extent64, c_flags)
+	runtime.KeepAlive(h.h)
+	if ret == -1 {
+		err := get_error("block_status_filter", c_err)
+		C.free_error(&c_err)
+		return err
+	}
+	return nil
+}
+
 /* Poll: poll the handle once */
 func (h *Libnbd) Poll(timeout int) (uint, error) {
 	if h.h == nil {
@@ -3145,6 +3223,104 @@ func (h *Libnbd) AioBlockStatus(count uint64, offset uint64, extent ExtentCallba
 	runtime.KeepAlive(h.h)
 	if ret == -1 {
 		err := get_error("aio_block_status", c_err)
+		C.free_error(&c_err)
+		return 0, err
+	}
+	return uint64(ret), nil
+}
+
+/* Struct carrying optional arguments for AioBlockStatus64. */
+type AioBlockStatus64Optargs struct {
+	/* CompletionCallback field is ignored unless CompletionCallbackSet == true. */
+	CompletionCallbackSet bool
+	CompletionCallback    CompletionCallback
+	/* Flags field is ignored unless FlagsSet == true. */
+	FlagsSet bool
+	Flags    CmdFlag
+}
+
+/* AioBlockStatus64: send block status command, with 64-bit callback */
+func (h *Libnbd) AioBlockStatus64(count uint64, offset uint64, extent64 Extent64Callback, optargs *AioBlockStatus64Optargs) (uint64, error) {
+	if h.h == nil {
+		return 0, closed_handle_error("aio_block_status_64")
+	}
+
+	var c_err C.struct_error
+	c_count := C.uint64_t(count)
+	c_offset := C.uint64_t(offset)
+	var c_extent64 C.nbd_extent64_callback
+	c_extent64.callback = (*[0]byte)(C._nbd_extent64_callback_wrapper)
+	c_extent64.free = (*[0]byte)(C._nbd_extent64_callback_free)
+	extent64_cbid := registerCallbackId(extent64)
+	c_extent64.user_data = C.alloc_cbid(C.long(extent64_cbid))
+	var c_completion C.nbd_completion_callback
+	var c_flags C.uint32_t
+	if optargs != nil {
+		if optargs.CompletionCallbackSet {
+			c_completion.callback = (*[0]byte)(C._nbd_completion_callback_wrapper)
+			c_completion.free = (*[0]byte)(C._nbd_completion_callback_free)
+			completion_cbid := registerCallbackId(optargs.CompletionCallback)
+			c_completion.user_data = C.alloc_cbid(C.long(completion_cbid))
+		}
+		if optargs.FlagsSet {
+			c_flags = C.uint32_t(optargs.Flags)
+		}
+	}
+
+	ret := C._nbd_aio_block_status_64_wrapper(&c_err, h.h, c_count, c_offset, c_extent64, c_completion, c_flags)
+	runtime.KeepAlive(h.h)
+	if ret == -1 {
+		err := get_error("aio_block_status_64", c_err)
+		C.free_error(&c_err)
+		return 0, err
+	}
+	return uint64(ret), nil
+}
+
+/* Struct carrying optional arguments for AioBlockStatusFilter. */
+type AioBlockStatusFilterOptargs struct {
+	/* CompletionCallback field is ignored unless CompletionCallbackSet == true. */
+	CompletionCallbackSet bool
+	CompletionCallback    CompletionCallback
+	/* Flags field is ignored unless FlagsSet == true. */
+	FlagsSet bool
+	Flags    CmdFlag
+}
+
+/* AioBlockStatusFilter: send filtered block status command to the NBD server */
+func (h *Libnbd) AioBlockStatusFilter(count uint64, offset uint64, contexts []string, extent64 Extent64Callback, optargs *AioBlockStatusFilterOptargs) (uint64, error) {
+	if h.h == nil {
+		return 0, closed_handle_error("aio_block_status_filter")
+	}
+
+	var c_err C.struct_error
+	c_count := C.uint64_t(count)
+	c_offset := C.uint64_t(offset)
+	c_contexts := arg_string_list(contexts)
+	defer free_string_list(c_contexts)
+	var c_extent64 C.nbd_extent64_callback
+	c_extent64.callback = (*[0]byte)(C._nbd_extent64_callback_wrapper)
+	c_extent64.free = (*[0]byte)(C._nbd_extent64_callback_free)
+	extent64_cbid := registerCallbackId(extent64)
+	c_extent64.user_data = C.alloc_cbid(C.long(extent64_cbid))
+	var c_completion C.nbd_completion_callback
+	var c_flags C.uint32_t
+	if optargs != nil {
+		if optargs.CompletionCallbackSet {
+			c_completion.callback = (*[0]byte)(C._nbd_completion_callback_wrapper)
+			c_completion.free = (*[0]byte)(C._nbd_completion_callback_free)
+			completion_cbid := registerCallbackId(optargs.CompletionCallback)
+			c_completion.user_data = C.alloc_cbid(C.long(completion_cbid))
+		}
+		if optargs.FlagsSet {
+			c_flags = C.uint32_t(optargs.Flags)
+		}
+	}
+
+	ret := C._nbd_aio_block_status_filter_wrapper(&c_err, h.h, c_count, c_offset, &c_contexts[0], c_extent64, c_completion, c_flags)
+	runtime.KeepAlive(h.h)
+	if ret == -1 {
+		err := get_error("aio_block_status_filter", c_err)
 		C.free_error(&c_err)
 		return 0, err
 	}
