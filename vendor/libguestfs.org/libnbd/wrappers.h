@@ -30,6 +30,24 @@
 
 #include "libnbd.h"
 
+/* Older libnbd headers do not define the 64-bit extent callback types.
+ * The generated wrappers already gate the corresponding functions with
+ * LIBNBD_HAVE_* checks and return ENOTSUP when they are unavailable, but
+ * cgo still has to parse these declarations. Provide a local fallback type
+ * so builds against those older headers can compile.
+ */
+#if !defined(LIBNBD_HAVE_NBD_BLOCK_STATUS_64) && \
+    !defined(LIBNBD_HAVE_NBD_BLOCK_STATUS_FILTER) && \
+    !defined(LIBNBD_HAVE_NBD_AIO_BLOCK_STATUS_64) && \
+    !defined(LIBNBD_HAVE_NBD_AIO_BLOCK_STATUS_FILTER)
+typedef struct {
+  uint64_t length;
+  uint32_t flags;
+} nbd_extent;
+
+typedef nbd_extent_callback nbd_extent64_callback;
+#endif
+
 /* When calling callbacks we pass the callback ID (a golang int /
  * C.long) in the void *user_data field.  We need to create a block
  * to store the callback number.  This must be freed by C.free(vp)
