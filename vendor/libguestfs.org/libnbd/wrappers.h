@@ -30,25 +30,6 @@
 
 #include "libnbd.h"
 
-/* Older libnbd headers do not define the 64-bit extent callback types,
- * but the generated Go bindings still reference them and handle missing
- * functions at runtime via LIBNBD_HAVE_* checks in wrappers.go.
- */
-#ifndef LIBNBD_HAVE_NBD_BLOCK_STATUS_64
-typedef struct {
-  uint64_t length;
-  uint32_t flags;
-} nbd_extent;
-
-typedef struct {
-  int (*callback) (void *user_data, const char *metacontext,
-                   uint64_t offset, nbd_extent *entries,
-                   size_t nr_entries, int *error);
-  void (*free) (void *user_data);
-  void *user_data;
-} nbd_extent64_callback;
-#endif
-
 /* When calling callbacks we pass the callback ID (a golang int /
  * C.long) in the void *user_data field.  We need to create a block
  * to store the callback number.  This must be freed by C.free(vp)
