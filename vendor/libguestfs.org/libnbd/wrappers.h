@@ -30,22 +30,6 @@
 
 #include "libnbd.h"
 
-#ifdef LIBNBD_HAVE_NBD_BLOCK_STATUS_64
-typedef nbd_extent _nbd_compat_extent;
-typedef nbd_extent64_callback _nbd_compat_extent64_callback;
-#else
-typedef struct {
-  uint64_t length;
-  uint32_t flags;
-} _nbd_compat_extent;
-
-typedef struct {
-  void *callback;
-  void *free;
-  void *user_data;
-} _nbd_compat_extent64_callback;
-#endif
-
 /* When calling callbacks we pass the callback ID (a golang int /
  * C.long) in the void *user_data field.  We need to create a block
  * to store the callback number.  This must be freed by C.free(vp)
@@ -308,10 +292,10 @@ int _nbd_block_status_wrapper (struct error *err,
         nbd_extent_callback extent_callback, uint32_t flags);
 int _nbd_block_status_64_wrapper (struct error *err,
         struct nbd_handle *h, uint64_t count, uint64_t offset,
-        _nbd_compat_extent64_callback extent64_callback, uint32_t flags);
+        nbd_extent64_callback extent64_callback, uint32_t flags);
 int _nbd_block_status_filter_wrapper (struct error *err,
         struct nbd_handle *h, uint64_t count, uint64_t offset,
-        char **contexts, _nbd_compat_extent64_callback extent64_callback,
+        char **contexts, nbd_extent64_callback extent64_callback,
         uint32_t flags);
 int _nbd_poll_wrapper (struct error *err,
         struct nbd_handle *h, int timeout);
@@ -394,11 +378,11 @@ int64_t _nbd_aio_block_status_wrapper (struct error *err,
         nbd_completion_callback completion_callback, uint32_t flags);
 int64_t _nbd_aio_block_status_64_wrapper (struct error *err,
         struct nbd_handle *h, uint64_t count, uint64_t offset,
-        _nbd_compat_extent64_callback extent64_callback,
+        nbd_extent64_callback extent64_callback,
         nbd_completion_callback completion_callback, uint32_t flags);
 int64_t _nbd_aio_block_status_filter_wrapper (struct error *err,
         struct nbd_handle *h, uint64_t count, uint64_t offset,
-        char **contexts, _nbd_compat_extent64_callback extent64_callback,
+        char **contexts, nbd_extent64_callback extent64_callback,
         nbd_completion_callback completion_callback, uint32_t flags);
 int _nbd_aio_get_fd_wrapper (struct error *err,
         struct nbd_handle *h);
@@ -480,12 +464,12 @@ int _nbd_extent_callback_wrapper (void *user_data, const char *metacontext,
                                   size_t nr_entries, int *error);
 void _nbd_extent_callback_free (void *user_data);
 
-extern int extent64_callback (long *callbackid, char *metacontext, uint64_t offset, _nbd_compat_extent *entries, size_t nr_entries, int *error);
+extern int extent64_callback (long *callbackid, char *metacontext, uint64_t offset, nbd_extent *entries, size_t nr_entries, int *error);
 
 
 int _nbd_extent64_callback_wrapper (void *user_data,
                                     const char *metacontext,
-                                    uint64_t offset, _nbd_compat_extent *entries,
+                                    uint64_t offset, nbd_extent *entries,
                                     size_t nr_entries, int *error);
 void _nbd_extent64_callback_free (void *user_data);
 

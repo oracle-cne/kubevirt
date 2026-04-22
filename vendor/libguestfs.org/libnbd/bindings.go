@@ -2193,7 +2193,7 @@ func (h *Libnbd) BlockStatus64(count uint64, offset uint64, extent64 Extent64Cal
 	var c_err C.struct_error
 	c_count := C.uint64_t(count)
 	c_offset := C.uint64_t(offset)
-	var c_extent64 C._nbd_compat_extent64_callback
+	var c_extent64 C.nbd_extent64_callback
 	c_extent64.callback = (*[0]byte)(C._nbd_extent64_callback_wrapper)
 	c_extent64.free = (*[0]byte)(C._nbd_extent64_callback_free)
 	extent64_cbid := registerCallbackId(extent64)
@@ -2233,7 +2233,7 @@ func (h *Libnbd) BlockStatusFilter(count uint64, offset uint64, contexts []strin
 	c_offset := C.uint64_t(offset)
 	c_contexts := arg_string_list(contexts)
 	defer free_string_list(c_contexts)
-	var c_extent64 C._nbd_compat_extent64_callback
+	var c_extent64 C.nbd_extent64_callback
 	c_extent64.callback = (*[0]byte)(C._nbd_extent64_callback_wrapper)
 	c_extent64.free = (*[0]byte)(C._nbd_extent64_callback_free)
 	extent64_cbid := registerCallbackId(extent64)
@@ -3248,7 +3248,7 @@ func (h *Libnbd) AioBlockStatus64(count uint64, offset uint64, extent64 Extent64
 	var c_err C.struct_error
 	c_count := C.uint64_t(count)
 	c_offset := C.uint64_t(offset)
-	var c_extent64 C._nbd_compat_extent64_callback
+	var c_extent64 C.nbd_extent64_callback
 	c_extent64.callback = (*[0]byte)(C._nbd_extent64_callback_wrapper)
 	c_extent64.free = (*[0]byte)(C._nbd_extent64_callback_free)
 	extent64_cbid := registerCallbackId(extent64)
@@ -3298,7 +3298,7 @@ func (h *Libnbd) AioBlockStatusFilter(count uint64, offset uint64, contexts []st
 	c_offset := C.uint64_t(offset)
 	c_contexts := arg_string_list(contexts)
 	defer free_string_list(c_contexts)
-	var c_extent64 C._nbd_compat_extent64_callback
+	var c_extent64 C.nbd_extent64_callback
 	c_extent64.callback = (*[0]byte)(C._nbd_extent64_callback_wrapper)
 	c_extent64.free = (*[0]byte)(C._nbd_extent64_callback_free)
 	extent64_cbid := registerCallbackId(extent64)

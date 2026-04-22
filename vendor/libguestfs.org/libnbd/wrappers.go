@@ -1752,7 +1752,7 @@ _nbd_block_status_wrapper (struct error *err,
 int
 _nbd_block_status_64_wrapper (struct error *err,
         struct nbd_handle *h, uint64_t count, uint64_t offset,
-        _nbd_compat_extent64_callback extent64_callback, uint32_t flags)
+        nbd_extent64_callback extent64_callback, uint32_t flags)
 {
 #ifdef LIBNBD_HAVE_NBD_BLOCK_STATUS_64
   int ret;
@@ -1770,7 +1770,7 @@ _nbd_block_status_64_wrapper (struct error *err,
 int
 _nbd_block_status_filter_wrapper (struct error *err,
         struct nbd_handle *h, uint64_t count, uint64_t offset,
-        char **contexts, _nbd_compat_extent64_callback extent64_callback,
+        char **contexts, nbd_extent64_callback extent64_callback,
         uint32_t flags)
 {
 #ifdef LIBNBD_HAVE_NBD_BLOCK_STATUS_FILTER
@@ -2325,7 +2325,7 @@ _nbd_aio_block_status_wrapper (struct error *err,
 int64_t
 _nbd_aio_block_status_64_wrapper (struct error *err,
         struct nbd_handle *h, uint64_t count, uint64_t offset,
-        _nbd_compat_extent64_callback extent64_callback,
+        nbd_extent64_callback extent64_callback,
         nbd_completion_callback completion_callback, uint32_t flags)
 {
 #ifdef LIBNBD_HAVE_NBD_AIO_BLOCK_STATUS_64
@@ -2345,7 +2345,7 @@ _nbd_aio_block_status_64_wrapper (struct error *err,
 int64_t
 _nbd_aio_block_status_filter_wrapper (struct error *err,
         struct nbd_handle *h, uint64_t count, uint64_t offset,
-        char **contexts, _nbd_compat_extent64_callback extent64_callback,
+        char **contexts, nbd_extent64_callback extent64_callback,
         nbd_completion_callback completion_callback, uint32_t flags)
 {
 #ifdef LIBNBD_HAVE_NBD_AIO_BLOCK_STATUS_FILTER
@@ -2856,7 +2856,7 @@ _nbd_extent_callback_free (void *user_data)
 
 int
 _nbd_extent64_callback_wrapper (void *user_data, const char *metacontext,
-                                uint64_t offset, _nbd_compat_extent *entries,
+                                uint64_t offset, nbd_extent *entries,
                                 size_t nr_entries, int *error)
 {
   // golang isn't const-correct, casts avoid warnings here:
