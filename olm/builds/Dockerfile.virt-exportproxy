@@ -1,0 +1,13 @@
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+
+ARG LOCAL_RPM_REPO
+ARG PACKAGE
+RUN useradd -d /home/nonroot-user -U -u 1001 -s /bin/bash nonroot-user
+RUN printf '[kubevirt-local]\nname=KubeVirt Local RPMs\nbaseurl=%s\nenabled=1\ngpgcheck=0\n' "$LOCAL_RPM_REPO" > /etc/yum.repos.d/kubevirt-local.repo && \
+    microdnf install -y "$PACKAGE" && \
+    microdnf clean all && \
+    rm -f /etc/yum.repos.d/kubevirt-local.repo
+USER 1001
+
+ENTRYPOINT ["/usr/bin/virt-exportproxy"]

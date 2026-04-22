@@ -83,6 +83,22 @@ func (b *mapBuilder) HandleExtents(metacontext string, offset uint64, entries []
 	return localOffset, nil
 }
 
+func decodeBlockStatusEntries(entries []uint32) ([]libnbd.LibnbdExtent, error) {
+	if len(entries)%2 != 0 {
+		return nil, fmt.Errorf("invalid block status entry count: %d", len(entries))
+	}
+
+	extents := make([]libnbd.LibnbdExtent, 0, len(entries)/2)
+	for i := 0; i < len(entries); i += 2 {
+		extents = append(extents, libnbd.LibnbdExtent{
+			Length: uint64(entries[i]),
+			Flags:  uint64(entries[i+1]),
+		})
+	}
+
+	return extents, nil
+}
+
 func (b *mapBuilder) coalesce(metacontext string, offset, length, flags uint64) error {
 	last := b.lastExtents[metacontext]
 	if last != nil && last.Flags == flags && last.Offset+last.Length == offset {
@@ -194,9 +210,15 @@ func (c *NBDClient) Map(req *nbdv1.MapRequest, stream nbdv1.NBD_MapServer) error
 		default:
 		}
 		prevOffset := currentOffset
-		err := l.BlockStatus64(endOffset-currentOffset, currentOffset,
-			func(metacontext string, offset uint64, entries []libnbd.LibnbdExtent, nbdErr *int) int {
-				maxOffset, err := builder.HandleExtents(metacontext, offset, entries)
+		err := l.BlockStatus(endOffset-currentOffset, currentOffset,
+			func(metacontext string, offset uint64, entries []uint32, nbdErr *int) int {
+				extents, err := decodeBlockStatusEntries(entries)
+				if err != nil {
+					*nbdErr = 1
+					return -1
+				}
+
+				maxOffset, err := builder.HandleExtents(metacontext, offset, extents)
 				if err != nil {
 					*nbdErr = 1
 					return -1
@@ -207,10 +229,10 @@ func (c *NBDClient) Map(req *nbdv1.MapRequest, stream nbdv1.NBD_MapServer) error
 				return 0
 			}, nil)
 		if err != nil {
-			return fmt.Errorf("BlockStatus64 at offset %d: %w", prevOffset, err)
+			return fmt.Errorf("BlockStatus at offset %d: %w", prevOffset, err)
 		}
 		if currentOffset <= prevOffset {
-			return fmt.Errorf("BlockStatus64 returned no forward progress at offset %d for context %s", prevOffset, requestedContext)
+			return fmt.Errorf("BlockStatus returned no forward progress at offset %d for context %s", prevOffset, requestedContext)
 		}
 	}
 
