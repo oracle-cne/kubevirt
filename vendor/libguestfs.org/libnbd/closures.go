@@ -46,7 +46,7 @@ func copy_uint32_array(entries *C.uint32_t, count C.size_t) []uint32 {
 	return ret
 }
 
-func copy_extent_array(entries *C.nbd_extent, count C.size_t) []LibnbdExtent {
+func copy_extent_array(entries *C._nbd_compat_extent, count C.size_t) []LibnbdExtent {
 	ret := make([]LibnbdExtent, count)
 	s := unsafe.Slice(entries, count)
 	for i, item := range s {
@@ -117,7 +117,7 @@ func extent_callback(callbackid *C.long, metacontext *C.char, offset C.uint64_t,
 type Extent64Callback func(metacontext string, offset uint64, entries []LibnbdExtent, error *int) int
 
 //export extent64_callback
-func extent64_callback(callbackid *C.long, metacontext *C.char, offset C.uint64_t, entries *C.nbd_extent, nr_entries C.size_t, error *C.int) C.int {
+func extent64_callback(callbackid *C.long, metacontext *C.char, offset C.uint64_t, entries *C._nbd_compat_extent, nr_entries C.size_t, error *C.int) C.int {
 	callbackFunc := getCallbackId(int(*callbackid))
 	callback, ok := callbackFunc.(Extent64Callback)
 	if !ok {
