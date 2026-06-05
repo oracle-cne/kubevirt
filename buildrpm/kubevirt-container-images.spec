@@ -22,6 +22,7 @@ Source:         %{name}-%{version}.tar.bz2
 
 BuildRequires: podman
 BuildRequires: golang >= 1.20.12
+BuildRequires: createrepo_c
 
 %description
 Container images for Kubevirt
@@ -37,11 +38,22 @@ Container images for Kubevirt
 %global base_image container-registry.oracle.com/os/oraclelinux:8-slim
 %global base_image_full container-registry.oracle.com/os/oraclelinux:8
 %endif
+local_rpm_repo_dir="$PWD/kubevirt-local-rpms"
+rm -rf "$local_rpm_repo_dir"
+mkdir -p "$local_rpm_repo_dir"
+for rpm_source_dir in /shared %{_topdir}/RPMS; do
+    if [ -d "$rpm_source_dir" ]; then
+        find "$rpm_source_dir" -name 'kubevirt-*-%{version}-%{release}*.rpm' -exec cp -n {} "$local_rpm_repo_dir"/ \;
+    fi
+done
+createrepo_c "$local_rpm_repo_dir"
 %global image_tag v%{version}
 podman build \
     --network=host \
     --build-arg BASE_IMAGE=%{base_image} \
+    --build-arg LOCAL_RPM_REPO=file:///kubevirt-local-rpms \
     --build-arg PACKAGE=kubevirt-api-%{version}-%{release}\
+    -v "$local_rpm_repo_dir":/kubevirt-local-rpms:ro \
     %{build_args} \
     -t %{registry}/virt-api:%{image_tag} -f ./olm/builds/Dockerfile.virt-api ./olm/builds
 podman save -o virt_api.tar %{registry}/virt-api:%{image_tag}
@@ -49,7 +61,9 @@ podman save -o virt_api.tar %{registry}/virt-api:%{image_tag}
 podman build \
     --network=host \
     --build-arg BASE_IMAGE=%{base_image} \
+    --build-arg LOCAL_RPM_REPO=file:///kubevirt-local-rpms \
     --build-arg PACKAGE=kubevirt-controller-%{version}-%{release}\
+    -v "$local_rpm_repo_dir":/kubevirt-local-rpms:ro \
     %{build_args} \
     -t %{registry}/virt-controller:%{image_tag} -f ./olm/builds/Dockerfile.virt-controller ./olm/builds
 podman save -o virt_controller.tar %{registry}/virt-controller:%{image_tag}
@@ -57,7 +71,9 @@ podman save -o virt_controller.tar %{registry}/virt-controller:%{image_tag}
 podman build \
     --network=host \
     --build-arg BASE_IMAGE=%{base_image} \
+    --build-arg LOCAL_RPM_REPO=file:///kubevirt-local-rpms \
     --build-arg PACKAGE=kubevirt-operator-%{version}-%{release}\
+    -v "$local_rpm_repo_dir":/kubevirt-local-rpms:ro \
     %{build_args} \
     -t %{registry}/virt-operator:%{image_tag} -f ./olm/builds/Dockerfile.virt-operator ./olm/builds
 podman save -o virt_operator.tar %{registry}/virt-operator:%{image_tag}
@@ -65,7 +81,9 @@ podman save -o virt_operator.tar %{registry}/virt-operator:%{image_tag}
 podman build \
     --network=host \
     --build-arg BASE_IMAGE=%{base_image} \
+    --build-arg LOCAL_RPM_REPO=file:///kubevirt-local-rpms \
     --build-arg PACKAGE=kubevirt-exportproxy-%{version}-%{release}\
+    -v "$local_rpm_repo_dir":/kubevirt-local-rpms:ro \
     %{build_args} \
     -t %{registry}/virt-exportproxy:%{image_tag} -f ./olm/builds/Dockerfile.virt-exportproxy ./olm/builds
 podman save -o virt_exportproxy.tar %{registry}/virt-exportproxy:%{image_tag}
@@ -73,7 +91,9 @@ podman save -o virt_exportproxy.tar %{registry}/virt-exportproxy:%{image_tag}
 podman build \
     --network=host \
     --build-arg BASE_IMAGE=%{base_image} \
+    --build-arg LOCAL_RPM_REPO=file:///kubevirt-local-rpms \
     --build-arg PACKAGE=kubevirt-exportserver-%{version}-%{release}\
+    -v "$local_rpm_repo_dir":/kubevirt-local-rpms:ro \
     %{build_args} \
     -t %{registry}/virt-exportserver:%{image_tag} -f ./olm/builds/Dockerfile.virt-exportserver ./olm/builds
 podman save -o virt_exportserver.tar %{registry}/virt-exportserver:%{image_tag}
@@ -81,7 +101,9 @@ podman save -o virt_exportserver.tar %{registry}/virt-exportserver:%{image_tag}
 podman build \
     --network=host \
     --build-arg BASE_IMAGE=%{base_image_full} \
+    --build-arg LOCAL_RPM_REPO=file:///kubevirt-local-rpms \
     --build-arg PACKAGE=kubevirt-launcher-%{version}-%{release}\
+    -v "$local_rpm_repo_dir":/kubevirt-local-rpms:ro \
     %{build_args} \
     -t %{registry}/virt-launcher:%{image_tag} -f ./olm/builds/Dockerfile.virt-launcher ./cmd/virt-launcher
 podman save -o virt_launcher.tar %{registry}/virt-launcher:%{image_tag}
@@ -89,7 +111,9 @@ podman save -o virt_launcher.tar %{registry}/virt-launcher:%{image_tag}
 podman build \
     --network=host \
     --build-arg BASE_IMAGE=%{base_image_full} \
+    --build-arg LOCAL_RPM_REPO=file:///kubevirt-local-rpms \
     --build-arg PACKAGE=kubevirt-handler-%{version}-%{release}\
+    -v "$local_rpm_repo_dir":/kubevirt-local-rpms:ro \
     %{build_args} \
     -t %{registry}/virt-handler:%{image_tag} -f ./olm/builds/Dockerfile.virt-handler ./cmd/virt-handler
 podman save -o virt_handler.tar %{registry}/virt-handler:%{image_tag}
@@ -97,7 +121,9 @@ podman save -o virt_handler.tar %{registry}/virt-handler:%{image_tag}
 podman build \
     --network=host \
     --build-arg BASE_IMAGE=%{base_image_full} \
+    --build-arg LOCAL_RPM_REPO=file:///kubevirt-local-rpms \
     --build-arg PACKAGE=kubevirt-libguestfs-appliance-%{version}-%{release}\
+    -v "$local_rpm_repo_dir":/kubevirt-local-rpms:ro \
     %{build_args} \
     -t %{registry}/libguestfs-tools-image:%{image_tag} -f ./olm/builds/Dockerfile.libguestfs-tools-image ./olm/builds
 podman save -o libguestfs_tools_image.tar %{registry}/libguestfs-tools-image:%{image_tag}
