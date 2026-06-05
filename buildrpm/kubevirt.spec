@@ -19,6 +19,7 @@ BuildRequires:	libvirt-devel
 %endif
 BuildRequires:  gcc
 BuildRequires:  glibc-static
+BuildRequires:  libnbd-devel
 BuildRequires:  golang >= 1.20.12
 
 %package -n virtctl
