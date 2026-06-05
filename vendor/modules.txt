@@ -195,6 +195,8 @@ github.com/google/goterm/term
 # github.com/google/pprof v0.0.0-20241210010833-40e02aabc2ad
 ## explicit; go 1.22
 github.com/google/pprof/profile
+# github.com/google/renameio/v2 v2.0.0
+## explicit; go 1.13
 # github.com/google/uuid v1.6.0
 ## explicit
 github.com/google/uuid
@@ -204,6 +206,8 @@ github.com/gordonklaus/ineffassign/pkg/ineffassign
 # github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
 ## explicit; go 1.20
 github.com/gorilla/websocket
+# github.com/wadey/gocovmerge v0.0.0-20160331181800-b5bfa59ec0ad
+## explicit
 # github.com/grafana/regexp v0.0.0-20221122212121-6b5c0a4cb7fd
 ## explicit; go 1.17
 github.com/grafana/regexp
@@ -421,6 +425,8 @@ github.com/pierrec/lz4/v4/internal/lz4block
 github.com/pierrec/lz4/v4/internal/lz4errors
 github.com/pierrec/lz4/v4/internal/lz4stream
 github.com/pierrec/lz4/v4/internal/xxh32
+# github.com/pkg/diff v0.0.0-20210226163009-20ebb0f2a09e
+## explicit; go 1.15
 # github.com/pkg/errors v0.9.1
 ## explicit
 github.com/pkg/errors
@@ -1305,6 +1311,10 @@ libvirt.org/go/libvirt
 # libvirt.org/go/libvirtxml v1.11000.1
 ## explicit; go 1.11
 libvirt.org/go/libvirtxml
+# mvdan.cc/editorconfig v0.2.1-0.20231228180347-1925077f8eb2
+## explicit; go 1.20
+# mvdan.cc/sh/v3 v3.8.0
+## explicit; go 1.21
 # sigs.k8s.io/controller-runtime v0.20.2
 ## explicit; go 1.23.0
 sigs.k8s.io/controller-runtime/pkg/controller/priorityqueue
