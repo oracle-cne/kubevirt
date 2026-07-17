@@ -21,6 +21,7 @@ Url:            https://github.com/kubevirt/kubevirt
 Source:         %{name}-%{version}.tar.bz2
 
 BuildRequires: podman
+BuildRequires: bash
 BuildRequires: golang >= 1.20.12
 
 %description
@@ -38,69 +39,12 @@ Container images for Kubevirt
 %global base_image_full container-registry.oracle.com/os/oraclelinux:8
 %endif
 %global image_tag v%{version}
-podman build \
-    --network=host \
-    --build-arg BASE_IMAGE=%{base_image} \
-    --build-arg PACKAGE=kubevirt-api-%{version}-%{release}\
-    %{build_args} \
-    -t %{registry}/virt-api:%{image_tag} -f ./olm/builds/Dockerfile.virt-api ./olm/builds
-podman save -o virt_api.tar %{registry}/virt-api:%{image_tag}
-
-podman build \
-    --network=host \
-    --build-arg BASE_IMAGE=%{base_image} \
-    --build-arg PACKAGE=kubevirt-controller-%{version}-%{release}\
-    %{build_args} \
-    -t %{registry}/virt-controller:%{image_tag} -f ./olm/builds/Dockerfile.virt-controller ./olm/builds
-podman save -o virt_controller.tar %{registry}/virt-controller:%{image_tag}
-
-podman build \
-    --network=host \
-    --build-arg BASE_IMAGE=%{base_image} \
-    --build-arg PACKAGE=kubevirt-operator-%{version}-%{release}\
-    %{build_args} \
-    -t %{registry}/virt-operator:%{image_tag} -f ./olm/builds/Dockerfile.virt-operator ./olm/builds
-podman save -o virt_operator.tar %{registry}/virt-operator:%{image_tag}
-
-podman build \
-    --network=host \
-    --build-arg BASE_IMAGE=%{base_image} \
-    --build-arg PACKAGE=kubevirt-exportproxy-%{version}-%{release}\
-    %{build_args} \
-    -t %{registry}/virt-exportproxy:%{image_tag} -f ./olm/builds/Dockerfile.virt-exportproxy ./olm/builds
-podman save -o virt_exportproxy.tar %{registry}/virt-exportproxy:%{image_tag}
-
-podman build \
-    --network=host \
-    --build-arg BASE_IMAGE=%{base_image} \
-    --build-arg PACKAGE=kubevirt-exportserver-%{version}-%{release}\
-    %{build_args} \
-    -t %{registry}/virt-exportserver:%{image_tag} -f ./olm/builds/Dockerfile.virt-exportserver ./olm/builds
-podman save -o virt_exportserver.tar %{registry}/virt-exportserver:%{image_tag}
-
-podman build \
-    --network=host \
-    --build-arg BASE_IMAGE=%{base_image_full} \
-    --build-arg PACKAGE=kubevirt-launcher-%{version}-%{release}\
-    %{build_args} \
-    -t %{registry}/virt-launcher:%{image_tag} -f ./olm/builds/Dockerfile.virt-launcher ./cmd/virt-launcher
-podman save -o virt_launcher.tar %{registry}/virt-launcher:%{image_tag}
-
-podman build \
-    --network=host \
-    --build-arg BASE_IMAGE=%{base_image_full} \
-    --build-arg PACKAGE=kubevirt-handler-%{version}-%{release}\
-    %{build_args} \
-    -t %{registry}/virt-handler:%{image_tag} -f ./olm/builds/Dockerfile.virt-handler ./cmd/virt-handler
-podman save -o virt_handler.tar %{registry}/virt-handler:%{image_tag}
-
-podman build \
-    --network=host \
-    --build-arg BASE_IMAGE=%{base_image_full} \
-    --build-arg PACKAGE=kubevirt-libguestfs-appliance-%{version}-%{release}\
-    %{build_args} \
-    -t %{registry}/libguestfs-tools-image:%{image_tag} -f ./olm/builds/Dockerfile.libguestfs-tools-image ./olm/builds
-podman save -o libguestfs_tools_image.tar %{registry}/libguestfs-tools-image:%{image_tag}
+REGISTRY="%{registry}" \
+IMAGE_TAG="%{image_tag}" \
+BASE_IMAGE="%{base_image}" \
+BASE_IMAGE_FULL="%{base_image_full}" \
+PACKAGE_VERSION_RELEASE="%{version}-%{release}" \
+bash ./olm/build-container-images.sh
 
 %install
 %__install -D -m 644 virt_api.tar %{buildroot}/usr/local/share/olcne/virt_api.tar
