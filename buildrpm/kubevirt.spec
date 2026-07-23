@@ -14,13 +14,13 @@ Source0:	%{name}-%{version}.tar.bz2
 
 %if %{?oraclelinux} == 9
 BuildRequires:	libvirt-devel == 9.0.0
+BuildRequires:  libnbd-devel
 %else
 BuildRequires:	libvirt-devel
 %endif
 BuildRequires:  gcc
 BuildRequires:  glibc-static
 BuildRequires:  golang >= 1.20.12
-BuildRequires:  libnbd-devel
 
 %package -n virtctl
 Summary: CLI for KubeVirt
@@ -206,7 +206,9 @@ go build -trimpath=false -tags selinux -ldflags="-X main.version=v%{version}" ./
 go build -trimpath=false -tags selinux -ldflags="-X main.version=v%{version}" ./cmd/virt-handler
 %endif
 go build -trimpath=false -tags selinux -ldflags="-X main.version=v%{version}" ./cmd/virt-launcher-monitor
+%if %{?oraclelinux} == 9
 go build -trimpath=false -tags selinux -ldflags="-X main.version=v%{version}" ./cmd/virt-launcher
+%endif
 go build -trimpath=false -tags selinux -ldflags="-X main.version=v%{version}" ./cmd/virt-operator
 go build -trimpath=false -tags selinux -ldflags="-X main.version=v%{version}" ./cmd/virt-probe
 go build -trimpath=false -tags selinux -ldflags="-X main.version=v%{version}" ./cmd/virt-tail
@@ -225,7 +227,9 @@ install -m 555 virt-freezer %{buildroot}/usr/bin/virt-freezer
 install -m 555 virt-handler %{buildroot}/usr/bin/virt-handler
 %endif
 install -m 555 virt-launcher-monitor %{buildroot}/usr/bin/virt-launcher-monitor
+%if %{?oraclelinux} == 9
 install -m 555 virt-launcher %{buildroot}/usr/bin/virt-launcher
+%endif
 install -m 555 virt-operator %{buildroot}/usr/bin/virt-operator
 install -m 555 virt-probe %{buildroot}/usr/bin/virt-probe
 install -m 555 virt-tail %{buildroot}/usr/bin/virt-tail
@@ -278,10 +282,12 @@ install -m 775 ./cmd/libguestfs/entrypoint.sh %{buildroot}/entrypoint.sh
 
 %files launcher
 %license LICENSE THIRD_PARTY_LICENSES.txt
+%if %{?oraclelinux} == 9
 /usr/bin/virt-launcher
 /usr/bin/node-labeller.sh
 /usr/bin/virt-tail
 %caps(cap_net_bind_service=pe) /usr/bin/virt-launcher
+%endif
 
 %files operator
 %license LICENSE THIRD_PARTY_LICENSES.txt
