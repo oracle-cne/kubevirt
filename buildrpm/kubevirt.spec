@@ -229,13 +229,13 @@ install -m 555 virt-handler %{buildroot}/usr/bin/virt-handler
 install -m 555 virt-launcher-monitor %{buildroot}/usr/bin/virt-launcher-monitor
 %if %{?oraclelinux} == 9
 install -m 555 virt-launcher %{buildroot}/usr/bin/virt-launcher
+install -m 555 virt-tail %{buildroot}/usr/bin/virt-tail
+install -m 555 ./cmd/virt-launcher/node-labeller/node-labeller.sh %{buildroot}/usr/bin/node-labeller.sh
 %endif
 install -m 555 virt-operator %{buildroot}/usr/bin/virt-operator
 install -m 555 virt-probe %{buildroot}/usr/bin/virt-probe
-install -m 555 virt-tail %{buildroot}/usr/bin/virt-tail
 install -m 555 virtctl %{buildroot}/usr/bin/virtctl
 install -m 555 container-disk %{buildroot}/usr/bin/container-disk
-install -m 555 ./cmd/virt-launcher/node-labeller/node-labeller.sh %{buildroot}/usr/bin/node-labeller.sh
 install -m 775 ./cmd/libguestfs/entrypoint.sh %{buildroot}/entrypoint.sh
 
 %files
