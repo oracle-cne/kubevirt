@@ -20,6 +20,7 @@ BuildRequires:	libvirt-devel
 BuildRequires:  gcc
 BuildRequires:  glibc-static
 BuildRequires:  golang >= 1.20.12
+BuildRequires:  libnbd
 
 %package -n virtctl
 Summary: CLI for KubeVirt
