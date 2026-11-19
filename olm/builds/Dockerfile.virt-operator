@@ -1,0 +1,9 @@
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+
+ARG PACKAGE
+RUN useradd -d /home/nonroot-user -U -u 1001 -s /bin/bash nonroot-user
+RUN microdnf install -y "$PACKAGE" && microdnf clean all
+USER 1001
+
+ENTRYPOINT ["/usr/bin/virt-operator"]
