@@ -1,0 +1,16 @@
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+
+# These steps are translated from ./cmd/virt-launcher/BUILD.bazel
+ARG PACKAGE
+RUN groupadd -g 107 qemu && useradd -u 107 -g qemu -s /bin/bash qemu
+RUN sh -c "dnf config-manager --enable ol9_appstream --enable ol9_UEKR8 --enable ol9_kvm_utils && \
+    dnf install -y "$PACKAGE" && \
+    dnf clean all"
+ADD qemu.conf /etc/libvirt/qemu.conf
+ADD virtqemud.conf /etc/libvirt/virtqemud.conf
+ADD nsswitch.conf /etc/nsswitch.conf
+
+RUN chmod 755 /etc/libvirt && chmod 555 /etc/libvirt/qemu.conf && chmod 555 /etc/libvirt/virtqemud.conf
+
+ENTRYPOINT ["/usr/bin/virt-launcher"]
